@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "649131066608",
+    "firebase_url": "https://keepitup-afeka.firebaseio.com",
+    "project_id": "keepitup-afeka",
+    "storage_bucket": "keepitup-afeka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649131066608:android:0d3bbdfbef2d47b4",
+        "android_client_info": {
+          "package_name": "com.afeka.keepitup.keepitup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649131066608-a3ag665mo82eb68uopp816l5o8t747n7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYqemYRnqAYVQHlh50iLG8uMA_Qu5nJl4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
