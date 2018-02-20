@@ -7,7 +7,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu_general">General</string>
     <string name="menu_warranty">Warranty</string>
-    <string name="menu_login">Login</string>
+    <string name="menu_login">Backup</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_provider">Providers</string>
     <string name="menu_insure">Insurance</string>
@@ -17,4 +17,23 @@
     <string name="title_activity_tabs">TabsActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="emptyWarning">Company can not be empty!</string>
 </resources>

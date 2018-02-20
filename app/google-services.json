@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "649131066608-29cl0mg246jjbk6ftr4v8j4h1fak8vpk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.afeka.keepitup.keepitup",
+            "certificate_hash": "47142c1a9227a9ae8d2f239a7b534bdb68dbe13a"
+          }
+        },
+        {
           "client_id": "649131066608-a3ag665mo82eb68uopp816l5o8t747n7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649131066608-a3ag665mo82eb68uopp816l5o8t747n7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
