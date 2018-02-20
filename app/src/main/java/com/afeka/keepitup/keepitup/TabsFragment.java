@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class TabsFragment extends Fragment {
     private GridView mGrid;
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+    private TextView newItemButton;
     private OnFragmentInteractionListener mListener;
 
     public TabsFragment() {
@@ -83,7 +84,13 @@ public class TabsFragment extends Fragment {
                 }
             });
 
-
+            newItemButton = view.findViewById(R.id.addItem);
+            newItemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MenuActivity)getActivity()).replaceFragment(new NewTransFragment());
+                }
+            });
 
 
         return view;
@@ -92,21 +99,21 @@ public class TabsFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onNewItemClicked();
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnFragmentInteractionListener) {
+  /*    if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
 
-
+*/
     }
 
     @Override
@@ -117,29 +124,9 @@ public class TabsFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onNewItemClicked();
     }
 
-    public static class CardAdapter extends BaseAdapter {
 
-        @Override
-        public int getCount() {
-            return 0;
-        }
 
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
-        }
-    }
 }

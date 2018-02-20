@@ -5,4 +5,19 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string-array name="charge_type">
+        <item>Cash</item>
+        <item>Credit Card</item>
+        <item>Bank Check</item>
+        <item>Standing Order</item>
+    </string-array>
+
+    <string-array name="notification_time">
+        <item>None</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+        <item>3 days</item>
+        <item>Week</item>
+    </string-array>
 </resources>

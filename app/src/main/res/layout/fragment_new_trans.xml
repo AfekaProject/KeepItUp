@@ -1,0 +1,282 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="@drawable/round_blue"
+    tools:context="com.afeka.keepitup.keepitup.NewTransFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:id="@+id/listLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/NewTransaction_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:text="New Transaction"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/name_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoText="false"
+                android:text="Name "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/name_trans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/name_view"
+                android:layout_alignBottom="@+id/name_view"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/name_view"
+                android:ems="10"
+                android:inputType="textPersonName"
+                 />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/company_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/company_trans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/company_view"
+                android:layout_alignBottom="@+id/company_view"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/company_view"
+                android:ems="10"
+                android:inputType="textPersonName"
+                 />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/startDate_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Date "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/startDate_trans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/startDate_view"
+                android:layout_alignBottom="@+id/startDate_view"
+                android:layout_alignParentEnd="false"
+                android:layout_toEndOf="@id/startDate_view"
+                android:allowUndo="false"
+                android:elevation="12dp"
+                android:ems="8"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/calendar_start"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toEndOf="@id/startDate_trans"
+                android:src="@drawable/date_icon" />
+
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/endDate_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Date   "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/endDate_trans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/endDate_view"
+                android:layout_alignBottom="@+id/endDate_view"
+                android:layout_alignParentEnd="false"
+                android:layout_toEndOf="@id/endDate_view"
+                android:elevation="12dp"
+                android:ems="8"
+                android:enabled="false" />
+
+            <ImageView
+                android:id="@+id/calendar_end"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toEndOf="@id/endDate_trans"
+                android:src="@drawable/date_icon" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/price_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Price "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/price_trans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/price_view"
+                android:layout_alignBottom="@+id/price_view"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/price_view"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/charge_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Charge type  "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Spinner
+                    android:id="@+id/charge_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/charge_view"
+                    android:popupBackground="@color/white"
+                    android:alpha="0.8" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/notificationTime_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forward Notification "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/notificationTime_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:popupBackground="@color/white"
+                android:layout_toEndOf="@id/notificationTime_view"
+                android:alpha="0.8"
+                />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/notes_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notes "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/notes_trans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/notes_view"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:maxLines="3" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/add_img_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimary"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="Add Images" />
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="Submit" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

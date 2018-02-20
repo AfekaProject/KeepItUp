@@ -9,25 +9,24 @@
 
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
 
             <Spinner
                 android:id="@+id/spinner_filter"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
-
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="13dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="22dp"
+                android:layout_toEndOf="@+id/filter_view"
                 android:background="@color/lightGrey"
                 android:focusableInTouchMode="false"
                 android:popupBackground="@color/lightGrey" />
@@ -37,22 +36,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/spinner_filter"
+                android:layout_alignParentStart="true"
                 android:layout_marginEnd="15dp"
-                android:layout_toStartOf="@+id/spinner_filter"
                 android:text="Filter"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <GridView
+                android:id="@+id/card_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/filter_view"
+                android:layout_gravity="center_horizontal"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp" />
 
         </RelativeLayout>
 
-        <GridView
-            android:id="@+id/card_grid"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:paddingBottom="@dimen/fab_margin">
+
+            <TextView
+                android:id="@+id/addItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="+ New Item"
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
 
-            />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </FrameLayout>

@@ -1,11 +1,10 @@
 package com.afeka.keepitup.keepitup;
 
-import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,FragmentChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MenuActivity extends AppCompatActivity
             }
         });*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -43,6 +42,18 @@ public class MenuActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStack();
+                }else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -127,4 +138,20 @@ public class MenuActivity extends AppCompatActivity
 
 
 
+    @Override
+    public void replaceFragment(android.support.v4.app.Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContent, fragment).commit();
+        fragmentTransaction.addToBackStack(fragment.toString());
+
+    }
+
+
+
+}
+
+interface FragmentChangeListener
+{
+    void replaceFragment(android.support.v4.app.Fragment fragment);
 }
