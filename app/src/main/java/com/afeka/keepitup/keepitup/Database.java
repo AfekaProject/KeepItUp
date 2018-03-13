@@ -76,7 +76,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Transaction> getTransactionList (){
+    public ArrayList<Transaction> getTransactionList (Transaction.TransactionType selectedType){
         ArrayList<Transaction> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = {FeedTransaction._ID,FeedTransaction.COLUMN_NAME_NAME,
@@ -84,10 +84,10 @@ public class Database extends SQLiteOpenHelper {
                 FeedTransaction.COLUMN_NAME_START_DATE,FeedTransaction.COLUMN_NAME_END_DATE,
                 FeedTransaction.COLUMN_NAME_NOTES,FeedTransaction.COLUMN_NAME_PRICE,
                 FeedTransaction.COLUMN_NAME_CHARGE_TYPE,FeedTransaction.COLUMN_NAME_NOTIFICATION};
-        //String selection = "";
-        //String[] selectionArgs = {};
-        //String sortOrder = "";
-        Cursor cursor = db.query(FeedTransaction.TABLE_NAME,projection,null,null,null,null,null);
+        String selection = FeedTransaction.COLUMN_NAME_TYPE+"";
+        String[] selectionArgs = {selectedType+""};
+        String sortOrder = FeedTransaction.COLUMN_NAME_START_DATE + " DESC";
+        Cursor cursor = db.query(FeedTransaction.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
         while (cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(FeedTransaction._ID));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_NAME));
@@ -130,9 +130,5 @@ public class Database extends SQLiteOpenHelper {
         private static final String COLUMN_NAME_PRICE = "price";
         private static final String COLUMN_NAME_CHARGE_TYPE = "chargeType";
         private static final String COLUMN_NAME_NOTIFICATION = "notification";
-
     }
-
-
-
 }
