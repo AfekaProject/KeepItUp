@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -44,6 +45,8 @@ import java.util.List;
 public class ImagesFragment extends Fragment implements FragmentCallback{
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;
     private static final int REQUEST_IMG_ID = 123;
+    private static final int REQUEST_IMAGE_CAPTURE = 100;
+    private static final int REQUEST_OK = 400;
     private static final String TEMP_IMAGE_NAME = "tempImg";
     private static final int MAX_IMGS = 5;
     private Button addNewImgButton;
@@ -95,8 +98,11 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
             @Override
             public void onClick(View view) {
                 Intent chooseImageIntent = getPickImageIntent(getContext());
-                startActivityForResult(chooseImageIntent, REQUEST_IMG_ID);
-
+                //startActivityForResult(chooseImageIntent, REQUEST_IMG_ID);
+                //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (chooseImageIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(chooseImageIntent, REQUEST_IMAGE_CAPTURE);
+                }
 
             }
         });
@@ -195,6 +201,16 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && requestCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            bmList.add(imageBitmap);
+            Drawable drawable = new BitmapDrawable(getContext().getResources(), imageBitmap);
+            imgSwitcher.setImageDrawable(drawable);
+        }
+
+
+        /*
         super.onActivityResult(requestCode, resultCode, data);
 
             switch (requestCode) {
@@ -214,6 +230,8 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
             }
+*/
+
 
     }
 
@@ -375,14 +393,17 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     @SuppressLint("RestrictedApi")
     public static Intent getPickImageIntent(Context context) {
         Intent chooserIntent = null;
-
         List<Intent> intentList = new ArrayList<>();
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+
         takePhotoIntent.putExtra("return-data", true);
         takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile(context)));
+
+
         intentList = addIntentsToList(context, intentList, pickIntent);
         intentList = addIntentsToList(context, intentList, takePhotoIntent);
 
@@ -396,7 +417,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     }
 
     private static File getTempFile(Context context) {
-        File imageFile = new File(context.getExternalCacheDir(), TEMP_IMAGE_NAME);
+        File imageFile = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TEMP_IMAGE_NAME);
         imageFile.getParentFile().mkdirs();
         return imageFile;
     }
