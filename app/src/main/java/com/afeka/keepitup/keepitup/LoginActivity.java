@@ -81,18 +81,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void backupToFirebase(View view) {
-
-
-        String company = editTextCompany.getText().toString();
-
-        if (!company.equals("")){
-
            // Transaction t = new Transaction(1,"google","android");
             //myRef.child("Users").child(userId).setValue(t);
             Toast.makeText(getBaseContext(), "Backup completed",Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getBaseContext(), R.string.emptyWarning,Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     public void checkLogin(View view) {
