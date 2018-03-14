@@ -71,9 +71,9 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
 
         //transToShow = db.getTransactionList();
-    transToShow.add(new Transaction.TransactionBuilder(0,"galaxy", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
-        transToShow.add(new Transaction.TransactionBuilder(0,"car", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2015-08-04")).build());
-        transToShow.add(new Transaction.TransactionBuilder(0,"bla bla", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
+    //transToShow.add(new Transaction.TransactionBuilder(0,"galaxy", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
+      //  transToShow.add(new Transaction.TransactionBuilder(0,"car", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2015-08-04")).build());
+        //transToShow.add(new Transaction.TransactionBuilder(0,"bla bla", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
         cardAdapter = new CardViewAdapter(getContext(),transToShow);
         buildRecycleView(view);
 

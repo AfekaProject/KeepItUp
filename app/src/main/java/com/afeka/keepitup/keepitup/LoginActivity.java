@@ -29,11 +29,10 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String userId;
 
-
     private Button loginButton;
     private Button backupButton;
     private Button restoreButton;
-    private EditText editTextCompany;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login);
         backupButton = findViewById(R.id.backupButton);
         restoreButton = findViewById(R.id.restoreButton);
-        editTextCompany = findViewById(R.id.companyName);
+
 
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -81,10 +80,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void backupToFirebase(View view) {
-           // Transaction t = new Transaction(1,"google","android");
-            //myRef.child("Users").child(userId).setValue(t);
-            Toast.makeText(getBaseContext(), "Backup completed",Toast.LENGTH_SHORT).show();
 
+        //Transaction t = new Transaction(1,"google","android");
+        myRef.child("Users").child(userId).setValue("t");
+        Toast.makeText(getBaseContext(), "Backup completed",Toast.LENGTH_SHORT).show();
     }
 
     public void checkLogin(View view) {

@@ -1,5 +1,6 @@
 package com.afeka.keepitup.keepitup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -97,7 +98,7 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
         android.support.v4.app.Fragment currentFragment = null;
         Class fragmentClass = null;
-
+        boolean backUpFlag = false;
         if (id == R.id.nav_general) {
             fragmentClass = TabsFragment.class;
         } else if (id == R.id.nav_gallery) {
@@ -107,31 +108,35 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_send) {
-
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+            backUpFlag = true;
         }
+        if (!backUpFlag){
+            try {
+                currentFragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        try {
-            currentFragment = (android.support.v4.app.Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, currentFragment).commit();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, currentFragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        // Highlight the selected item has been done by NavigationView
-        item.setChecked(true);
-        // Set action bar title
-        setTitle(item.getTitle());
-        // Close the navigation drawer
-        drawer.closeDrawers();
+            // Highlight the selected item has been done by NavigationView
+            item.setChecked(true);
+            // Set action bar title
+            setTitle(item.getTitle());
+            // Close the navigation drawer
+            drawer.closeDrawers();
 
       /*  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         */
+        }
+
         return true;
     }
 
@@ -148,7 +153,14 @@ public class MenuActivity extends AppCompatActivity
     }
 
 
+    public void showAddActivity(View view) {
+        //Intent intent = new Intent(getBaseContext(),AddTransaction.class);
+       // startActivity(intent);
+    }
 
+    public void addTransaction(View view) {
+
+    }
 }
 
 interface FragmentChangeListener

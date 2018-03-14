@@ -1,5 +1,7 @@
 package com.afeka.keepitup.keepitup;
 
+import android.graphics.Bitmap;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,7 +10,7 @@ import java.util.Date;
 public class Transaction {
 
     enum  TransactionType {Insurance,Warranty , Provider}
-    enum ChargeType {Cash,CreditCard,BankCheck,StandingOrder}
+    enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
     enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
 
     //required parameters
@@ -20,7 +22,7 @@ public class Transaction {
 
     //optional parameters
     private Date endDate;
-    private ArrayList<File> documents;
+    private ArrayList<Bitmap> documents;
     private String notes;
     private double price;
     private ChargeType chargeType;
@@ -32,8 +34,30 @@ public class Transaction {
         this.type = builder.type;
         this.company = builder.company;
         this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.documents = builder.documents;
+        this.notes = builder.notes;
+        this.price = builder.price;
+        setChargeType(builder.chargeType);
+        setNotification(builder.notification);
+    }
 
+    public void setChargeType(ChargeType chargeType) {
+        if (chargeType == null)
+            this.chargeType = ChargeType.None;
+        else
+            this.chargeType = chargeType;
+    }
 
+    public void setNotification(ForwardNotification notification) {
+        if (notification == null)
+                this.notification = ForwardNotification.Never;
+        else
+            this.notification = notification;
+    }
+
+    public void setDocuments(ArrayList<Bitmap> documents) {
+        this.documents = documents;
     }
 
     public int getId() {
@@ -60,7 +84,7 @@ public class Transaction {
         return endDate;
     }
 
-    public ArrayList<File> getDocuments() {
+    public ArrayList<Bitmap> getDocuments() {
         return documents;
     }
 
@@ -101,13 +125,11 @@ public class Transaction {
 
         //optional parameters
         private Date endDate;
-        private ArrayList<File> documents;
+        private ArrayList<Bitmap> documents;
         private String notes;
         private double price;
         private ChargeType chargeType;
         private ForwardNotification notification;
-
-
 
         public TransactionBuilder (int id, String name, TransactionType type,
                                    String company, Date startDate){
@@ -122,7 +144,10 @@ public class Transaction {
             this.endDate = endDate;
             return this;
         }
-
+        public TransactionBuilder setDocuments (ArrayList<Bitmap> documents){
+            this.documents = documents;
+            return this;
+        }
         public TransactionBuilder setNotes (String notes){
             this.notes = notes;
             return this;
@@ -140,15 +165,10 @@ public class Transaction {
             return this;
         }
 
+
         public Transaction build(){
             return new Transaction(this);
         }
 
-
-
-
     }
-
-
-
 }

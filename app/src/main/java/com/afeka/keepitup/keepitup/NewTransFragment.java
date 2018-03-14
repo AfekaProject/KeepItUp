@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -77,6 +80,13 @@ public class NewTransFragment extends Fragment {
         if (getArguments() != null) {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+       // Database db = new Database(getContext());
+       // Transaction t = new Transaction.TransactionBuilder(0,"Guy", Transaction.TransactionType.Provider,"Migdal", android.icu.util.Calendar.getInstance().getTime()).build();
+        //db.addTransaction(t);
+        //Transaction tran = db.getTransactionList(Transaction.TransactionType.Provider).get(0);
+        //Log.e("lala", tran.getName());
+
     }
 
     @Override
@@ -160,6 +170,8 @@ public class NewTransFragment extends Fragment {
                     snackbar.show();
                     getFragmentManager().popBackStackImmediate();
                 }
+
+
             }
         });
 

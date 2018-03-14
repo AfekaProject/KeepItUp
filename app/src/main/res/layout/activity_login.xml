@@ -7,29 +7,59 @@
     android:layout_height="match_parent"
     tools:context="com.afeka.keepitup.keepitup.LoginActivity">
 
+    <TextView
+        android:id="@+id/backupTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|center_horizontal"
+        android:text="@string/backup"
+        android:textSize="36sp"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <Button
+        android:id="@+id/backupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="120dp"
+        android:layout_weight="1"
+        android:enabled="false"
+        android:onClick="backupToFirebase"
+        android:text="@string/backup"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/backupTitle" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
+        android:onClick="checkLogin"
+        android:text="@string/sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/backupTitle"
+        tools:layout_editor_absoluteX="148dp" />
+
+    <Button
+        android:id="@+id/restoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="120dp"
+        android:layout_weight="1"
+        android:enabled="false"
+        android:onClick="restoreFromFirebase"
+        android:text="@string/restore"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/backupTitle" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/backupTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="50dp"
-            android:gravity="top|center_horizontal"
-            android:text="@string/backup"
-            android:textSize="36sp"
-            android:visibility="visible" />
-
-        <EditText
-            android:id="@+id/companyName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="Company" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,33 +68,7 @@
             android:orientation="horizontal"
             android:padding="20dp">
 
-            <Button
-                android:id="@+id/restoreButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:onClick="restoreFromFirebase"
-                android:text="@string/restore" />
-
-            <Button
-                android:id="@+id/backupButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:onClick="backupToFirebase"
-                android:text="@string/backup" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="checkLogin"
-            android:text="@string/sign_in" />
 
     </LinearLayout>
 

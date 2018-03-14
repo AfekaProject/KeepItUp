@@ -63,6 +63,30 @@
             android:paddingBottom="2dp">
 
             <TextView
+                android:id="@+id/type_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction type  "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/type_view"
+                android:popupBackground="@color/white"
+                android:alpha="0.8" />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp">
+
+            <TextView
                 android:id="@+id/company_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
