@@ -11,6 +11,7 @@
     <string name="menu_logout">Logout</string>
     <string name="menu_provider">Providers</string>
     <string name="menu_insure">Insurance</string>
+    <string name="img_select">Select Option</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -36,4 +37,17 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign Out</string>
     <string name="emptyWarning">Company can not be empty!</string>
+    <string name="delete">DELETE!</string>
+    <string name="edit">EDIT</string>
+    <string name="name">Name: </string>
+    <string name="notification_title">KeepItUp-Don\'\t forget!</string>
+    <string name="not_title">Notification time </string>
+    <string name="company_title">Company </string>
+    <string name="startDate_title">Start date </string>
+    <string name="endDate_title">End date </string>
+    <string name="notes_title">Notes </string>
+    <string name="price_title">Total price </string>
+    <string name="charge_title">Charge type </string>
+    <string name="newTrans_title">New Transaction </string>
+
 </resources>

@@ -1,9 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:background="@drawable/round_blue"
+    android:background="@color/grey_blue"
     tools:context="com.afeka.keepitup.keepitup.ImagesFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,9 +14,72 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/add_img_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_shape"
+            android:shadowColor="@color/colorPrimary"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="ADD"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
         <ImageSwitcher
             android:id="@+id/img_switcher"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="306dp"
+            android:inAnimation="@anim/fui_slide_in_right"
+            android:outAnimation="@anim/fui_slide_out_left">
+
+        </ImageSwitcher>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/forward_icon" />
+
+            <Button
+                android:id="@+id/prevBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_icon" />
+
+            <ImageView
+                android:id="@+id/delete_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/delete_icon"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/submit_img_button"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_shape"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="OK"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+
     </LinearLayout>
 </FrameLayout>

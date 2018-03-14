@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:background="@drawable/round_blue"
+    android:background="@color/grey_blue"
     tools:context="com.afeka.keepitup.keepitup.NewTransFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,20 +13,21 @@
         android:id="@+id/listLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingRight="8dp"
+        android:orientation="vertical"
         android:paddingLeft="8dp"
-        android:orientation="vertical">
+        android:paddingRight="8dp">
 
         <TextView
             android:id="@+id/NewTransaction_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/revolution"
             android:paddingBottom="4dp"
-            android:text="New Transaction"
+            android:text="@string/newTrans_title"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="visible" />
 
@@ -53,8 +54,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_toEndOf="@id/name_view"
                 android:ems="10"
-                android:inputType="textPersonName"
-                 />
+                android:inputType="textPersonName" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -79,10 +79,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_toEndOf="@id/company_view"
                 android:ems="10"
-                android:inputType="textPersonName"
-                 />
+                android:inputType="textPersonName" />
         </RelativeLayout>
-
 
 
         <RelativeLayout
@@ -119,8 +117,6 @@
                 android:src="@drawable/date_icon" />
 
         </RelativeLayout>
-
-
 
 
         <RelativeLayout
@@ -199,12 +195,12 @@
                 android:textSize="18sp" />
 
             <Spinner
-                    android:id="@+id/charge_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/charge_view"
-                    android:popupBackground="@color/white"
-                    android:alpha="0.8" />
+                android:id="@+id/charge_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/charge_view"
+                android:alpha="0.8"
+                android:popupBackground="@color/white" />
         </RelativeLayout>
 
 
@@ -225,10 +221,9 @@
                 android:id="@+id/notificationTime_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:popupBackground="@color/white"
                 android:layout_toEndOf="@id/notificationTime_view"
                 android:alpha="0.8"
-                />
+                android:popupBackground="@color/white" />
 
 
         </RelativeLayout>
@@ -261,20 +256,71 @@
 
         <Button
             android:id="@+id/add_img_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+            android:layout_width="180dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:background="@color/colorPrimary"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:text="Add Images" />
+            android:background="@drawable/button_shape"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="Add Images"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/totalImgs_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Images:  "
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/numOfImg_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/totalImgs_textView"
+                android:text="0"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/error_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="Error"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/submit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="Submit" />
+            android:layout_width="270dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_shape"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="SUBMIT"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
 
 
     </LinearLayout>

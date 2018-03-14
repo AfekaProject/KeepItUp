@@ -2,12 +2,13 @@ package com.afeka.keepitup.keepitup;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Transaction {
 
     enum  TransactionType {Insurance,Warranty , Provider}
-    enum ChargeType {Once,PerMonth,PerYear}
+    enum ChargeType {Cash,CreditCard,BankCheck,StandingOrder}
     enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
 
     //required parameters
@@ -26,6 +27,11 @@ public class Transaction {
     private ForwardNotification notification;
 
     private Transaction(TransactionBuilder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.type = builder.type;
+        this.company = builder.company;
+        this.startDate = builder.startDate;
 
 
     }
@@ -72,6 +78,17 @@ public class Transaction {
 
     public ForwardNotification getNotification() {
         return notification;
+    }
+
+    public Boolean isExpired(){
+        if(endDate == null)
+            return false;
+        else{
+            if(endDate.compareTo(Calendar.getInstance().getTime()) > 0)
+                return false;
+            else
+                return true;
+        }
     }
 
     public static class TransactionBuilder {
@@ -126,6 +143,10 @@ public class Transaction {
         public Transaction build(){
             return new Transaction(this);
         }
+
+
+
+
     }
 
 
