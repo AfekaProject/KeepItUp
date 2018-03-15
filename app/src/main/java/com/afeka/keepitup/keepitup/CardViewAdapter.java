@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.telecom.Call;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.view.LayoutInflater;
 import android.widget.Filter;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
@@ -28,6 +30,7 @@ import com.bumptech.glide.load.engine.Resource;
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,14 +46,13 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder  {
         private TextView nameTextView;
         private TextView startDateTextView;
-        private TextView endDateTextView;
+        private TextView company;
 
         public ViewHolder(View itemView){
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameToShow);
             startDateTextView = itemView.findViewById(R.id.startDateToShow);
-            endDateTextView = itemView.findViewById(R.id.endDateToShow);
-
+            company = itemView.findViewById(R.id.companyToShow);
 
         }
 
@@ -89,9 +91,16 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         Transaction currentTrans = cardsToShow.get(position);
+        CardView cardView = holder.itemView.findViewById(R.id.card_view);
+
+        if(currentTrans.isExpired())
+            cardView.setBackgroundResource(R.drawable.roundexpired);
+        else
+            cardView.setBackgroundResource(R.drawable.roundcard);
+
         holder.nameTextView.setText(currentTrans.getName());
         holder.startDateTextView.setText(currentTrans.getStartDate().toString());
-
+        holder.company.setText(currentTrans.getCompany());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

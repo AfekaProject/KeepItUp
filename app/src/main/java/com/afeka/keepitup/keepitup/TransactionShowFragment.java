@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -16,6 +17,7 @@ public class TransactionShowFragment extends Fragment {
     private Transaction currentTranscation;
     private TextView name, company, startDate, endDate, notification, notes;
     private OnFragmentInteractionListener mListener;
+    private View toImgButton;
 
     public TransactionShowFragment() {
         // Required empty public constructor
@@ -41,7 +43,18 @@ public class TransactionShowFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transaction_show, container, false);
         setTransactionID();
 
+        toImgButton = view.findViewById(R.id.watchImg_button);
 
+        toImgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ID",transactionID);
+                ImagesToShowFragment imagesToShowFragment = new ImagesToShowFragment();
+                imagesToShowFragment.setArguments(bundle);
+                ((MenuActivity)getActivity()).replaceFragment(imagesToShowFragment);
+            }
+        });
 
 
         return view;

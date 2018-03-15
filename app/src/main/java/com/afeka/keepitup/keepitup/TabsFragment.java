@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,12 +29,15 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
 public class TabsFragment extends Fragment implements SearchView.OnQueryTextListener {
     private Database db = new Database(getContext());
     public static ArrayList<Transaction> transToShow = new ArrayList<>();
     private RecyclerView rViewList;
-    private TextView newItemButton;
+    private FloatingActionButton newItemButton;
     private OnFragmentInteractionListener mListener;
     private CardViewAdapter cardAdapter;
     private AlertDialog.Builder builder;
@@ -71,16 +75,20 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
 
         //transToShow = db.getTransactionList();
-    //transToShow.add(new Transaction.TransactionBuilder(0,"galaxy", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
-      //  transToShow.add(new Transaction.TransactionBuilder(0,"car", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2015-08-04")).build());
-        //transToShow.add(new Transaction.TransactionBuilder(0,"bla bla", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2010);
+        cal.set(Calendar.MONTH, 8);
+        cal.set(Calendar.DAY_OF_MONTH, 5);
+    transToShow.add(new Transaction.TransactionBuilder(0,"galaxy", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).setEndDate(cal.getTime()).build());
+        transToShow.add(new Transaction.TransactionBuilder(0,"car", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2015-08-04")).build());
+        transToShow.add(new Transaction.TransactionBuilder(0,"bla bla", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
         cardAdapter = new CardViewAdapter(getContext(),transToShow);
         buildRecycleView(view);
 
         Spinner spinner = view.findViewById(R.id.spinner_filter);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.warranty_array, android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.SortBy, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -89,7 +97,19 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(getContext(), i + "selected", Toast.LENGTH_LONG).show();
+                   switch(i){
+                       case 0:
+                           Collections.sort(transToShow, Transaction.BY_NAME);
+                           break;
+                       case 1:
+                           Collections.sort(transToShow, Transaction.BY_START_DATE);
+                           break;
+                       case 2:
+                           Collections.sort(transToShow, Transaction.BY_ID);
+                           break;
+                   }
+
+                    cardAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -98,7 +118,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                 }
             });
 
-            newItemButton = view.findViewById(R.id.addItem);
+            newItemButton = view.findViewById(R.id.floatingActionButton);
             newItemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -179,8 +179,10 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
        deleteBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Log.e("position", "is"+switcherPosition);
-               bmList.remove(switcherPosition--);
+               bmList.remove(switcherPosition);
+
+               if(switcherPosition > 0 )
+                   switcherPosition--;
 
                if(bmList.size() > 0)
                imgSwitcher.setImageDrawable(new BitmapDrawable(getContext().getResources(),bmList.get(switcherPosition)));
@@ -201,9 +203,11 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && requestCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+          //  Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = getImageFromResult(getActivity(), resultCode, data);
             bmList.add(imageBitmap);
             Drawable drawable = new BitmapDrawable(getContext().getResources(), imageBitmap);
             imgSwitcher.setImageDrawable(drawable);
@@ -432,7 +436,6 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         }
         return list;
     }
-
 
 }
 interface FragmentCallback {
