@@ -77,7 +77,7 @@ public class Database extends SQLiteOpenHelper {
             date = sdt.format(transaction.getEndDate());
         else
             date = "";
-        values.put(FeedTransaction.COLUMN_NAME_START_DATE,date);
+        values.put(FeedTransaction.COLUMN_NAME_END_DATE,date);
         values.put(FeedTransaction.COLUMN_NAME_NOTES,transaction.getNotes());
         values.put(FeedTransaction.COLUMN_NAME_PRICE,transaction.getPrice());
         values.put(FeedTransaction.COLUMN_NAME_CHARGE_TYPE,transaction.getChargeType().toString());
@@ -178,7 +178,7 @@ public class Database extends SQLiteOpenHelper {
         try{
             startDate = sdt.parse(cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_START_DATE)));
             String tempDate = cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_END_DATE));
-            if (tempDate.equals(""))
+            if (tempDate =="")
                 endDate = null;
             else
                 endDate = sdt.parse(tempDate);

@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button backupButton;
     private Button restoreButton;
 
+    private Database db = new Database(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login);
         backupButton = findViewById(R.id.backupButton);
         restoreButton = findViewById(R.id.restoreButton);
-
 
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -77,12 +80,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void restoreFromFirebase(View view) {
+
     }
 
     public void backupToFirebase(View view) {
+        ArrayList<Transaction> listToBackup = new ArrayList<>();
+        for (int i = 0 ; i < Transaction.TransactionType.values().length ; i++){
+             listToBackup.addAll(db.getTransactionList(Transaction.TransactionType.values()[i]));
+        }
 
-        //Transaction t = new Transaction(1,"google","android");
-        myRef.child("Users").child(userId).setValue("t");
+        myRef.child("Users").child(userId).setValue(listToBackup);
         Toast.makeText(getBaseContext(), "Backup completed",Toast.LENGTH_SHORT).show();
     }
 

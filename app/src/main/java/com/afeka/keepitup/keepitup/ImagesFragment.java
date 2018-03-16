@@ -97,11 +97,11 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         addNewImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent chooseImageIntent = getPickImageIntent(getContext());
+                //Intent chooseImageIntent = getPickImageIntent(getContext());
                 //startActivityForResult(chooseImageIntent, REQUEST_IMG_ID);
-                //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (chooseImageIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(chooseImageIntent, REQUEST_IMAGE_CAPTURE);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
 
             }
@@ -201,9 +201,10 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && requestCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //Bitmap imageBitmap = getImageFromResult(getActivity(),resultCode,data);
             bmList.add(imageBitmap);
             Drawable drawable = new BitmapDrawable(getContext().getResources(), imageBitmap);
             imgSwitcher.setImageDrawable(drawable);
