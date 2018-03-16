@@ -3,8 +3,10 @@ package com.afeka.keepitup.keepitup;
 import android.graphics.Bitmap;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Transaction {
@@ -105,10 +107,12 @@ public class Transaction {
     }
 
     public Boolean isExpired(){
+       Date currentDate = Calendar.getInstance().getTime();
+
         if(endDate == null)
             return false;
         else{
-            if(endDate.compareTo(Calendar.getInstance().getTime()) > 0)
+            if(endDate.after(currentDate))
                 return false;
             else
                 return true;
@@ -130,6 +134,8 @@ public class Transaction {
         private double price;
         private ChargeType chargeType;
         private ForwardNotification notification;
+
+
 
         public TransactionBuilder (int id, String name, TransactionType type,
                                    String company, Date startDate){
@@ -171,4 +177,34 @@ public class Transaction {
         }
 
     }
+
+    static final Comparator<Transaction> BY_NAME =
+            new Comparator<Transaction>() {
+                @Override
+                public int compare(Transaction t1, Transaction t2) {
+                    return t1.getName().compareTo(t2.getName());
+                }
+
+            };
+
+    static final Comparator<Transaction> BY_START_DATE =
+            new Comparator<Transaction>() {
+                @Override
+                public int compare(Transaction t1, Transaction t2) {
+                    return t1.getStartDate().compareTo(t2.getStartDate());
+                }
+
+            };
+    static final Comparator<Transaction> BY_ID =
+            new Comparator<Transaction>() {
+                @Override
+                public int compare(Transaction t1, Transaction t2) {
+                    return t1.getId() - t2.getId();
+                }
+
+            };
+
+
+
+
 }

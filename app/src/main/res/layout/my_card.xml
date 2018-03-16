@@ -11,8 +11,9 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:background="@drawable/round"
-        card_view:cardCornerRadius="2dp"
+        android:elevation="5dp"
+        android:background="@drawable/roundcard"
+        card_view:cardCornerRadius="5dp"
         card_view:contentPadding="10dp">
 
         <RelativeLayout
@@ -26,7 +27,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="19dp"
                 android:layout_toEndOf="@+id/startDateToShow"
-                android:text="hello"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -40,7 +40,7 @@
                 android:layout_marginTop="10dp" />
 
             <TextView
-                android:id="@+id/endDateToShow"
+                android:id="@+id/companyToShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/startDateToShow"/>

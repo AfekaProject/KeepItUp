@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:background="@color/grey_blue"
+    android:background="@drawable/backgroundbuilding"
     tools:context="com.afeka.keepitup.keepitup.NewTransFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -40,7 +40,6 @@
                 android:id="@+id/name_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoText="false"
                 android:text="Name "
                 android:textColor="@color/white"
                 android:textSize="18sp" />
@@ -57,27 +56,6 @@
                 android:inputType="textPersonName" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp">
-
-            <TextView
-                android:id="@+id/type_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Transaction type  "
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <Spinner
-                android:id="@+id/type_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/type_view"
-                android:popupBackground="@color/white"
-                android:alpha="0.8" />
-        </RelativeLayout>
 
 
 
@@ -285,12 +263,13 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_shape"
-            android:shadowColor="#FFFFFF"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
+            android:shadowColor="#8f000000"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            android:shadowRadius="100"
             android:text="Add Images"
-            android:textColor="#FFFFFF"
+
+            android:textColor="#99ffffff"
             android:textSize="20sp" />
 
 
@@ -339,11 +318,12 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_shape"
             android:shadowColor="#FFFFFF"
-            android:shadowDx="0"
-            android:shadowDy="0"
+            android:shadowDx="2"
+            android:shadowDy="2"
             android:shadowRadius="5"
             android:text="SUBMIT"
-            android:textColor="#FFFFFF"
+            android:fontFamily="@font/revolution"
+            android:textColor="#83ffffff"
             android:textSize="30sp" />
 
 

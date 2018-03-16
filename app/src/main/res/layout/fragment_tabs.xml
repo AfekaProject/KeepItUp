@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroundbuilding"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.afeka.keepitup.keepitup.TabsFragment">
 
@@ -20,44 +21,48 @@
             android:layout_height="0dp"
             android:layout_weight="0.9">
 
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/blue"
+                android:queryHint="search" />
+
             <Spinner
+
                 android:id="@+id/spinner_filter"
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="22dp"
-                android:layout_toEndOf="@+id/filter_view"
-                android:background="@color/lightGrey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/filter_view"
+                android:background="@color/fui_transparent"
                 android:focusableInTouchMode="false"
-                android:popupBackground="@color/lightGrey" />
+                android:layout_below="@id/search_view"
+                android:padding="8dp"
+                android:spinnerMode="dialog" />
+
 
             <TextView
                 android:id="@+id/filter_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/spinner_filter"
                 android:layout_alignParentStart="true"
-                android:layout_marginEnd="15dp"
-                android:text="Filter"
+                android:layout_below="@id/search_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:text="Sort by "
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <SearchView
-                android:id="@+id/search_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/filter_view"
-                android:layout_margin="3dp"
-                android:background="@color/blue"
-                android:queryHint="search" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/search_view"
+                android:layout_below="@+id/filter_view"
                 android:layout_margin="5dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
@@ -65,24 +70,16 @@
 
             </android.support.v7.widget.RecyclerView>
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:paddingBottom="@dimen/fab_margin">
-
-            <TextView
-                android:id="@+id/addItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:text="+ New Item"
-                android:textAlignment="center"
-                android:textSize="18sp" />
-
+                android:layout_gravity="right"
+                android:layout_weight="0.9"
+                android:clickable="true"
+                android:src="@drawable/plus_icon" />
 
         </RelativeLayout>
 
