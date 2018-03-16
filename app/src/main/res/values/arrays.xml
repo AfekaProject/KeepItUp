@@ -20,4 +20,11 @@
         <item>3 days</item>
         <item>Week</item>
     </string-array>
+
+
+    <string-array name="transactions_type">
+        <item>Insurance</item>
+        <item>Warranty</item>
+        <item>Providers</item>
+    </string-array>
 </resources>

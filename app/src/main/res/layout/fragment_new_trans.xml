@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:background="@drawable/backgroundbuilding"
+    android:background="@drawable/pagebackground"
     tools:context="com.afeka.keepitup.keepitup.NewTransFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+        android:paddingLeft="15dp">
 
         <TextView
             android:id="@+id/NewTransaction_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="21dp"
             android:fontFamily="@font/revolution"
             android:paddingBottom="4dp"
             android:text="@string/newTrans_title"
@@ -34,6 +34,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -41,35 +42,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/name_trans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/name_view"
-                android:layout_alignBottom="@+id/name_view"
+                android:layout_alignBaseline="@id/name_view"
                 android:layout_alignParentEnd="true"
                 android:layout_toEndOf="@id/name_view"
+                android:layout_marginBottom="3dp"
                 android:ems="10"
                 android:inputType="textPersonName" />
+
         </RelativeLayout>
 
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/transType_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type "
+                android:textColor="@color/blue"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/typeTrans_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/transType_view"
+                android:alpha="0.8"
+                android:entries="@array/transactions_type"
+                android:popupBackground="@color/blue" />
+
+        </RelativeLayout>
 
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/company_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:text="Company "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <EditText
@@ -88,6 +118,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -95,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start Date "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <EditText
@@ -113,10 +144,12 @@
 
             <ImageView
                 android:id="@+id/calendar_start"
-                android:layout_width="30dp"
+                android:layout_width="40dp"
                 android:layout_height="30dp"
+                android:paddingBottom="5dp"
                 android:layout_toEndOf="@id/startDate_trans"
                 android:src="@drawable/date_icon" />
+
 
         </RelativeLayout>
 
@@ -124,6 +157,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -131,7 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="End Date   "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <EditText
@@ -150,6 +184,7 @@
                 android:id="@+id/calendar_end"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:paddingBottom="5dp"
                 android:layout_toEndOf="@id/endDate_trans"
                 android:src="@drawable/date_icon" />
 
@@ -159,6 +194,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -166,7 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total Price "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <EditText
@@ -186,6 +222,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -193,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Charge type  "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <Spinner
@@ -202,13 +239,15 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/charge_view"
                 android:alpha="0.8"
-                android:popupBackground="@color/white" />
+                android:popupBackground="@color/blue" />
         </RelativeLayout>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="3dp"
             android:paddingBottom="2dp">
 
             <TextView
@@ -216,7 +255,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Forward Notification "
-                android:textColor="@color/white"
+                android:textColor="@color/blue"
                 android:textSize="18sp" />
 
             <Spinner
@@ -225,52 +264,48 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/notificationTime_view"
                 android:alpha="0.8"
-                android:popupBackground="@color/white" />
+                android:layout_marginEnd="3dp"
+                android:popupBackground="@color/blue" />
 
 
         </RelativeLayout>
 
 
         <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="7dp">
+
+        <TextView
+            android:id="@+id/notes_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notes "
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/notes_trans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="2dp">
-
-            <TextView
-                android:id="@+id/notes_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Notes "
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/notes_trans"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/notes_view"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                android:maxLines="3" />
+            android:layout_toEndOf="@id/notes_view"
+            android:ems="10"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:maxLines="3" />
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
         <Button
             android:id="@+id/add_img_button"
 
-            android:layout_width="180dp"
-            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_shape"
-            android:shadowColor="#8f000000"
-            android:shadowDx="5"
-            android:shadowDy="5"
-            android:shadowRadius="100"
-            android:text="Add Images"
-
-            android:textColor="#99ffffff"
-            android:textSize="20sp" />
+            android:background="@drawable/addimg_icon" />
 
 
         <RelativeLayout
@@ -313,18 +348,11 @@
 
         <Button
             android:id="@+id/submit_button"
-            android:layout_width="270dp"
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_shape"
-            android:shadowColor="#FFFFFF"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="5"
-            android:text="SUBMIT"
-            android:fontFamily="@font/revolution"
-            android:textColor="#83ffffff"
-            android:textSize="30sp" />
+            android:layout_marginTop="30dp"
+            android:background="@drawable/submitbutton" />
 
 
     </LinearLayout>

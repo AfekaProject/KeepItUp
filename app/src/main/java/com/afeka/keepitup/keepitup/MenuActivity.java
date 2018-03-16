@@ -23,18 +23,18 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -52,7 +52,7 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -91,16 +91,18 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
         android.support.v4.app.Fragment currentFragment = null;
         Class fragmentClass = null;
+        int transType = -1;
         boolean backUpFlag = false;
+        fragmentClass = TabsFragment.class;
         if (id == R.id.nav_general) {
             fragmentClass = TabsFragment.class;
-        } else if (id == R.id.nav_gallery) {
-            fragmentClass = TabsFragment.class;
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_warranty) {
+            transType = Transaction.TransactionType.Warranty.ordinal();
+        } else if (id == R.id.nav_insurance) {
+            transType = Transaction.TransactionType.Insurance.ordinal();
+        } else if (id == R.id.nav_provider) {
+            transType = Transaction.TransactionType.Provider.ordinal();
+        } else if (id == R.id.nav_backup) {
             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
             backUpFlag = true;
@@ -112,10 +114,13 @@ public class MenuActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+            Bundle bundle = new Bundle();
+            bundle.putInt("TYPE",transType);
+            currentFragment.setArguments(bundle);
             // Insert the fragment by replacing any existing fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, currentFragment).commit();
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
             // Highlight the selected item has been done by NavigationView

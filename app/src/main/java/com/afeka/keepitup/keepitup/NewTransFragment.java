@@ -43,6 +43,8 @@ public class NewTransFragment extends Fragment {
     private ArrayList<Bitmap> bmList;
     private Date calStart, calEnd;
     private TextView errorView, name, companyName, price, notes;
+    private int transType;
+    private int details;
     private Transaction currentTransaction;
 
 
@@ -69,9 +71,6 @@ public class NewTransFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
        // Database db = new Database(getContext());
        // Transaction t = new Transaction.TransactionBuilder(0,"Guy", Transaction.TransactionType.Provider,"Migdal", android.icu.util.Calendar.getInstance().getTime()).build();
@@ -92,7 +91,7 @@ public class NewTransFragment extends Fragment {
            if(bmList!=null)
             numOfImgView.setText(Integer.toString(bmList.size() ));
 
-
+        setTransType(view);
         //initial charge spinner
         chargeTypeSpinner = view.findViewById(R.id.charge_spinner);
         ArrayAdapter<CharSequence> chargeAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -153,7 +152,7 @@ public class NewTransFragment extends Fragment {
         errorView = view.findViewById(R.id.error_textView);
         submitBtn = view.findViewById(R.id.submit_button);
 
-
+        setDetails();
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +199,19 @@ public class NewTransFragment extends Fragment {
             endDate.setText(dayOfMonth+"/"+month+"/"+year);
         }
     };
+
+
+    private void setTransType(View view){
+        Bundle bundle = getArguments();
+        transType = bundle.getInt("TYPE");
+        Spinner typeSpinner = view.findViewById(R.id.typeTrans_spinner);
+
+        if(transType != -1) {
+            typeSpinner.setSelection(transType);
+            typeSpinner.setEnabled(false);
+        }
+
+    }
 
     private Boolean createTrans(){
         if(checkValidInfo()) {
@@ -310,7 +322,7 @@ public class NewTransFragment extends Fragment {
         }
         else if(name.getText().length() == 0){
             errorView.setVisibility(View.VISIBLE);
-            errorView.setBackgroundColor(getResources().getColor(R.color.red));
+            errorView.setTextColor(getResources().getColor(R.color.red));
             errorView.setText("Invalid name!"); //need to be in string file!!
             return false;
         }
@@ -327,17 +339,33 @@ public class NewTransFragment extends Fragment {
         else if(calStart!=null)
             return true;
 
-        return true;
+        return false;
 
     }
 
-    void setAlaram(){
+    private void setAlaram(){
         Intent intent = new Intent(getContext(),NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),currentTransaction.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
 
+    }
+
+    private void setDetails(){
+        Bundle bundle = getArguments();
+        details = bundle.getInt("EDIT");
+
+        if(details != -1 ){
+            Database db = new Database(this.getActivity().getBaseContext());
+            Transaction transaction = db.getTransactionById(details);
+
+            name.setText(transaction.getName());
+            companyName.setText(transaction.getCompany());
+            startDate.setText(transaction.getStartDate().toString());
+            endDate.setText(transaction.getEndDate().toString());
+            notes.setText(transaction.getNotes());
+        }
     }
 
 

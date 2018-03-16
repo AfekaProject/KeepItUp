@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class TabsFragment extends Fragment implements SearchView.OnQueryTextListener {
-    private Database db = new Database(getContext());
+    private Database db;
     public static ArrayList<Transaction> transToShow = new ArrayList<>();
     private RecyclerView rViewList;
     private FloatingActionButton newItemButton;
@@ -43,6 +43,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
     private AlertDialog.Builder builder;
     private int lastPosition = 0;
     private SearchView searchView;
+    private int transType;
 
 
     public TabsFragment() {
@@ -73,15 +74,8 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
-
-        //transToShow = db.getTransactionList();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2010);
-        cal.set(Calendar.MONTH, 8);
-        cal.set(Calendar.DAY_OF_MONTH, 5);
-    transToShow.add(new Transaction.TransactionBuilder(0,"galaxy", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).setEndDate(cal.getTime()).build());
-        transToShow.add(new Transaction.TransactionBuilder(0,"car", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2015-08-04")).build());
-        transToShow.add(new Transaction.TransactionBuilder(0,"bla bla", Transaction.TransactionType.Insurance,"COMPANY", Date.valueOf("2010-05-04")).build());
+        db = new Database(getContext());
+        getTransactionType();
         cardAdapter = new CardViewAdapter(getContext(),transToShow);
         buildRecycleView(view);
 
@@ -114,7 +108,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-
+                    Collections.sort(transToShow, Transaction.BY_ID);
                 }
             });
 
@@ -122,7 +116,12 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             newItemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MenuActivity)getActivity()).replaceFragment(new NewTransFragment());
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("TYPE",transType);
+                    bundle.putInt("EDIT", -1);
+                    NewTransFragment newTransFragment = new NewTransFragment();
+                    newTransFragment.setArguments(bundle);
+                    ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
                 }
             });
 
@@ -144,6 +143,13 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             @Override
             public void onLeftClicked(int position) { //edit/show
                 super.onLeftClicked(position);
+                Bundle bundle = new Bundle();
+                bundle.putInt("EDIT",transToShow.get(position).getId());
+                NewTransFragment newTransFragment = new NewTransFragment();
+                newTransFragment.setArguments(bundle);
+                ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
+
+
             }
 
             @Override
@@ -167,23 +173,6 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         });
 
 
-      /*  recyclerView.setOnClickListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public void onClick(View itemView) {
-                int position = rViewList.getChildAdapterPosition(itemView);
-                int id =  transToShow.get(position).getId();
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("ID",id);
-
-                TransactionShowFragment showFragment = new TransactionShowFragment();
-                showFragment.setArguments(bundle);
-                Log.e("clicked","position"+ position);
-                ((MenuActivity)getActivity()).replaceFragment(showFragment);
-
-            }
-        });
-*/
     }
 
     private void setDialogConfirm(){
@@ -206,6 +195,27 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Material_Light_Dialog_Alert);
         builder.setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).create();
+    }
+
+    void getTransactionType(){
+        transType = getArguments().getInt("TYPE");
+
+        switch (transType){
+            case 0:
+                transToShow = db.getTransactionList(Transaction.TransactionType.Insurance);
+                break;
+            case 1:
+                transToShow = db.getTransactionList(Transaction.TransactionType.Warranty);
+                break;
+            case 3:
+                transToShow = db.getTransactionList(Transaction.TransactionType.Provider);
+                break;
+            case -1:
+                //general
+                default:
+                    //general
+
+        }
     }
 
 

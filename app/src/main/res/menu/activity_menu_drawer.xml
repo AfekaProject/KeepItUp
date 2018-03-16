@@ -9,15 +9,15 @@
             android:icon="@drawable/general_icon"
             android:title="@string/menu_general" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_warranty"
             android:icon="@drawable/warranty_icon"
             android:title="@string/menu_warranty" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_insurance"
             android:icon="@drawable/insurnece_icon"
             android:title="@string/menu_insure" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_provider"
             android:icon="@drawable/provider_icon"
             android:title="@string/menu_provider" />
     </group>
@@ -26,7 +26,7 @@
         <menu>
 
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_backup"
                 android:icon="@drawable/login_icon"
                 android:title="@string/menu_login" />
         </menu>

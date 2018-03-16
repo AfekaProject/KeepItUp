@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -97,11 +98,13 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         addNewImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent chooseImageIntent = getPickImageIntent(getContext());
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                Intent chooseImageIntent = getPickImageIntent(getContext());
                 //startActivityForResult(chooseImageIntent, REQUEST_IMG_ID);
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (chooseImageIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(chooseImageIntent, REQUEST_IMAGE_CAPTURE);
                 }
 
             }
