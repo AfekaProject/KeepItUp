@@ -2,14 +2,23 @@ package com.afeka.keepitup.keepitup;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.nfc.Tag;
+import android.os.Environment;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +30,7 @@ public class Database extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "database.db";
     private static final SimpleDateFormat sdt = new SimpleDateFormat("dd-MM-yyyy");
+    private static final String IMAGE_FOLDER = "images";
 
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,33 +49,8 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_IMAGES);
     }
 
-    private static final String SQL_CREATE_TRANSACTIONS =
-            "CREATE TABLE " + FeedTransaction.TABLE_NAME + " (" +
-                    FeedTransaction._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    FeedTransaction.COLUMN_NAME_NAME + " TEXT," +
-                    FeedTransaction.COLUMN_NAME_TYPE + " TEXT," +
-                    FeedTransaction.COLUMN_NAME_COMPANY + " TEXT," +
-                    FeedTransaction.COLUMN_NAME_START_DATE + " DATE," +
-                    FeedTransaction.COLUMN_NAME_END_DATE + " DATE," +
-                    FeedTransaction.COLUMN_NAME_NOTES + " TEXT," +
-                    FeedTransaction.COLUMN_NAME_PRICE + " REAL," +
-                    FeedTransaction.COLUMN_NAME_CHARGE_TYPE + " TEXT," +
-                    FeedTransaction.COLUMN_NAME_NOTIFICATION + " TEXT" +
-                    " );";
 
-    private static final String SQL_DELETE_TRANSACTIONS =
-            "DROP TABLE IF EXISTS " + FeedTransaction.TABLE_NAME;
-
-    private static final String SQL_CREATE_IMAGES =
-            "CREATE TABLE " + FeedImages.TABLE_NAME + " (" +
-                    FeedImages.COLUMN_NAME_TRANSACTION_ID + " INTEGER, " +
-                    FeedImages.COLUMN_NAME_FILE + " BLOB" +
-                    " );";
-
-    private static final String SQL_DELETE_IMAGES =
-            "DROP TABLE IF EXISTS " + FeedImages.TABLE_NAME;
-
-    public long addTransaction (Transaction transaction){
+    public int addTransaction (Transaction transaction,Context context){
         ContentValues values = new ContentValues();
         values.put(FeedTransaction.COLUMN_NAME_NAME,transaction.getName());
         values.put(FeedTransaction.COLUMN_NAME_TYPE,transaction.getType().toString());
@@ -82,9 +67,9 @@ public class Database extends SQLiteOpenHelper {
         values.put(FeedTransaction.COLUMN_NAME_CHARGE_TYPE,transaction.getChargeType().toString());
         values.put(FeedTransaction.COLUMN_NAME_NOTIFICATION,transaction.getNotification().toString());
         SQLiteDatabase db = getWritableDatabase();
-        long id = db.insert(FeedTransaction.TABLE_NAME,null,values);
+        int id = (int)db.insert(FeedTransaction.TABLE_NAME,null,values);
         db.close();
-        addImages(id,transaction.getDocuments());
+        addImages(id,transaction.getDocuments(),context);
 
         return id;
     }
@@ -97,8 +82,10 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-/*    public Transaction getTransactionById (int transactionId){
+    public Transaction getTransactionById (int transactionId){
         SQLiteDatabase db = getReadableDatabase();
+        Transaction t = null;
+/*
         String[] projection = {FeedTransaction._ID,FeedTransaction.COLUMN_NAME_NAME,
                 FeedTransaction.COLUMN_NAME_TYPE,FeedTransaction.COLUMN_NAME_COMPANY,
                 FeedTransaction.COLUMN_NAME_START_DATE,FeedTransaction.COLUMN_NAME_END_DATE,
@@ -108,42 +95,42 @@ public class Database extends SQLiteOpenHelper {
         String[] selectionArgs = {transactionId+""};
         String sortOrder = FeedTransaction.COLUMN_NAME_START_DATE + " DESC";
         Cursor cursor = db.query(FeedTransaction.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
-        Transaction t = readTransactionCursor(cursor);
-        t.setDocuments(getImages(t.getId()));
-
+        */
+        Cursor cursor = db.rawQuery("SELECT * " +
+                "FROM " + FeedTransaction.TABLE_NAME +
+                " WHERE " + FeedTransaction._ID + "=" + transactionId , null);
+        if (cursor.moveToFirst())
+            t = readTransactionCursor(cursor);
         cursor.close();
+        t.setDocuments(getImages(t.getId()));
         db.close();
         return t;
-    }*/
-public Transaction getTransactionById (int transactionId){
-    SQLiteDatabase db = getReadableDatabase();
-    Transaction t =null;
+    }
 
-    Cursor cursor = db.rawQuery("SELECT * " +
-            "FROM " + FeedTransaction.TABLE_NAME +
-            " WHERE " + FeedTransaction._ID + "=" + transactionId , null);
-    if (cursor.moveToFirst())
-    t = readTransactionCursor(cursor);
-    cursor.close();
-    t.setDocuments(getImages(t.getId()));
-    db.close();
-    return t;
-}
-
-    public ArrayList<Bitmap> getImages (int id){
+    public ArrayList<Bitmap> getImages (int id) {
         ArrayList<Bitmap> images = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = {FeedImages.COLUMN_NAME_FILE};
-        String selection = FeedImages.COLUMN_NAME_TRANSACTION_ID +"=?";
+        String selection = FeedImages.COLUMN_NAME_TRANSACTION_ID +"= ?";
         String[] selectionArgs = {id+""};
         Cursor cursor = db.query(FeedImages.TABLE_NAME,projection,selection,selectionArgs,null,null,null);
-        if (!cursor.moveToFirst())
-            cursor.moveToFirst();
-        while(cursor.moveToNext()){
-            byte[] imgByte = cursor.getBlob(cursor.getColumnIndexOrThrow(FeedImages.COLUMN_NAME_FILE));
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
-            images.add(bitmap);
-        }
+
+            while(cursor.moveToNext()){
+                if (!cursor.isNull(cursor.getColumnIndexOrThrow(FeedImages.COLUMN_NAME_FILE))){
+                    // byte[] imgByte = cursor.getBlob(cursor.getColumnIndex(FeedImages.COLUMN_NAME_FILE));
+                    //Bitmap bitmap = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+                    File f = new File(cursor.getString(cursor.getColumnIndex(FeedImages.COLUMN_NAME_FILE)));
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    if (bitmap==null)
+                        Log.e("Database:","bitmap = null");
+                    images.add(bitmap);
+                }
+            }
         cursor.close();
         db.close();
         return images;
@@ -164,37 +151,63 @@ public Transaction getTransactionById (int transactionId){
         while (cursor.moveToNext()){
             list.add(readTransactionCursor(cursor));
         }
+        cursor.close();
         for (int i = 0 ; i<list.size() ; i++){
             list.get(i).setDocuments(getImages(list.get(i).getId()));
         }
         db.close();
-        cursor.close();
         return list;
     }
 
-    private void addImages (long id, ArrayList<Bitmap> images){
-        if (images==null)
-            return;
-        ContentValues values = new ContentValues();
-        for (int i = 0 ; i <  images.size() ; i++){
-            byte[] converted = convertImgToByte(images.get(i));
-            values.put(FeedImages.COLUMN_NAME_TRANSACTION_ID,id);
-            values.put(FeedImages.COLUMN_NAME_FILE,converted);
-            SQLiteDatabase db = getWritableDatabase();
-            db.insert(FeedImages.TABLE_NAME,null,values);
-            db.close();
+    public ArrayList<Transaction> getAllTransactions (){
+        ArrayList<Transaction> list = new ArrayList<>();
+        for (int i = 0 ; i < Transaction.TransactionType.values().length ; i++){
+            list.addAll(getTransactionList(Transaction.TransactionType.values()[i]));
         }
+        return list;
     }
 
-    private byte[] convertImgToByte(Bitmap image){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
+
+    private void addImages (long id, ArrayList<Bitmap> images,Context context){
+        if (images==null)
+            return;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        for (int i = 0 ; i <  images.size() ; i++){
+            String name = id + "_" + i + "image";
+            String converted = saveImageToDevice(name,images.get(i),context);
+            values.put(FeedImages.COLUMN_NAME_TRANSACTION_ID,id);
+            values.put(FeedImages.COLUMN_NAME_FILE,converted);
+            db.insert(FeedImages.TABLE_NAME,null,values);
+        }
+        db.close();
+    }
+
+    private String saveImageToDevice(String name,Bitmap image,Context context){
+        //File internalStorage = context.getDir(IMAGE_FOLDER, Context.MODE_PRIVATE);
+        String external = Environment.getExternalStorageDirectory().toString();
+        File directory = new File (external+"/"+IMAGE_FOLDER);
+        directory.mkdirs();
+        String fName = name +".jpg";
+        File file = new File(directory,fName);
+        FileOutputStream fos = null;
+        String imagePath;
+        try {
+            fos = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 100 , fos);
+            fos.close();
+            imagePath = file.getAbsolutePath();
+        }
+        catch (Exception ex) {
+            Log.i("DATABASE", "Problem updating picture", ex);
+            imagePath = "";
+        }
+        return imagePath;
     }
 
     private Transaction readTransactionCursor(Cursor cursor){
-        int id = cursor.getInt(cursor.getColumnIndexOrThrow(FeedTransaction._ID));
+
+        int id = (int)cursor.getLong(cursor.getColumnIndexOrThrow(FeedTransaction._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_NAME));
         Transaction.TransactionType type = Transaction.TransactionType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_TYPE)));
         String company = cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_COMPANY));
@@ -220,11 +233,37 @@ public Transaction getTransactionById (int transactionId){
         Transaction.ChargeType chargeType = Transaction.ChargeType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_CHARGE_TYPE)));
         Transaction.ForwardNotification notification = Transaction.ForwardNotification.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(FeedTransaction.COLUMN_NAME_NOTIFICATION)));
 
-        return new Transaction.TransactionBuilder(id,name,type,company,startDate)
-                .setEndDate(endDate).setNotes(notes)
+        return new Transaction.TransactionBuilder(name,type,company,startDate)
+                .setId(id).setEndDate(endDate).setNotes(notes)
                 .setPrice(price).setChargeType(chargeType).setNotification(notification)
                 .build();
     }
+
+    private static final String SQL_CREATE_TRANSACTIONS =
+            "CREATE TABLE " + FeedTransaction.TABLE_NAME + " (" +
+                    FeedTransaction._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    FeedTransaction.COLUMN_NAME_NAME + " TEXT," +
+                    FeedTransaction.COLUMN_NAME_TYPE + " TEXT," +
+                    FeedTransaction.COLUMN_NAME_COMPANY + " TEXT," +
+                    FeedTransaction.COLUMN_NAME_START_DATE + " DATE," +
+                    FeedTransaction.COLUMN_NAME_END_DATE + " DATE," +
+                    FeedTransaction.COLUMN_NAME_NOTES + " TEXT," +
+                    FeedTransaction.COLUMN_NAME_PRICE + " REAL," +
+                    FeedTransaction.COLUMN_NAME_CHARGE_TYPE + " TEXT," +
+                    FeedTransaction.COLUMN_NAME_NOTIFICATION + " TEXT" +
+                    " );";
+
+    private static final String SQL_DELETE_TRANSACTIONS =
+            "DROP TABLE IF EXISTS " + FeedTransaction.TABLE_NAME;
+
+    private static final String SQL_CREATE_IMAGES =
+            "CREATE TABLE " + FeedImages.TABLE_NAME + " (" +
+                    FeedImages.COLUMN_NAME_TRANSACTION_ID + " INTEGER, " +
+                    FeedImages.COLUMN_NAME_FILE + " TEXT" +
+                    " );";
+
+    private static final String SQL_DELETE_IMAGES =
+            "DROP TABLE IF EXISTS " + FeedImages.TABLE_NAME;
 
     private class FeedTransaction implements BaseColumns{
         private static final String TABLE_NAME = "transactions";

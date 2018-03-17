@@ -12,8 +12,11 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
         if (user!=null){
             userId = user.getUid();
+            Log.e (TAG,userId);
             loginButton.setText(R.string.sign_out);
             backupButton.setEnabled(true);
             restoreButton.setEnabled(true);
@@ -80,15 +84,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void restoreFromFirebase(View view) {
+        ValueEventListener restore = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.getValue();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        myRef.addValueEventListener(restore);
+
+        myRef.removeEventListener(restore);
     }
 
     public void backupToFirebase(View view) {
-        ArrayList<Transaction> listToBackup = new ArrayList<>();
-        for (int i = 0 ; i < Transaction.TransactionType.values().length ; i++){
-             listToBackup.addAll(db.getTransactionList(Transaction.TransactionType.values()[i]));
-        }
-
+        ArrayList <Transaction> listToBackup = db.getAllTransactions();
         myRef.child("Users").child(userId).setValue(listToBackup);
         Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
     }

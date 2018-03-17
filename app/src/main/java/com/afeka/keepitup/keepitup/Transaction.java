@@ -44,6 +44,10 @@ public class Transaction {
         setNotification(builder.notification);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setChargeType(ChargeType chargeType) {
         if (chargeType == null)
             this.chargeType = ChargeType.None;
@@ -135,15 +139,17 @@ public class Transaction {
         private ChargeType chargeType;
         private ForwardNotification notification;
 
-
-
-        public TransactionBuilder (int id, String name, TransactionType type,
+        public TransactionBuilder (String name, TransactionType type,
                                    String company, Date startDate){
-            this.id = id;
             this.name = name;
             this.type = type;
             this.company = company;
             this.startDate = startDate;
+        }
+
+        public TransactionBuilder setId(int id) {
+            this.id = id;
+            return this;
         }
 
         public TransactionBuilder setEndDate(Date endDate){
@@ -154,6 +160,7 @@ public class Transaction {
             this.documents = documents;
             return this;
         }
+
         public TransactionBuilder setNotes (String notes){
             this.notes = notes;
             return this;

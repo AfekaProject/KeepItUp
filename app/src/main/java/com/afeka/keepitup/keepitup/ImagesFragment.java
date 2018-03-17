@@ -1,9 +1,11 @@
 package com.afeka.keepitup.keepitup;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
@@ -19,8 +21,9 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +48,10 @@ import java.util.List;
  */
 public class ImagesFragment extends Fragment implements FragmentCallback{
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;
-    private static final int REQUEST_IMG_ID = 123;
     private static final int REQUEST_IMAGE_CAPTURE = 100;
-    private static final int REQUEST_OK = 400;
     private static final String TEMP_IMAGE_NAME = "tempImg";
     private static final int MAX_IMGS = 5;
+    private static final int MY_PERMISSIONS_REQUEST = 500;
     private Button addNewImgButton;
     private static int MIN_WIDTH = DEFAULT_MIN_WIDTH_QUALITY;
     private ImageSwitcher imgSwitcher;
@@ -91,8 +93,9 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_images, container, false);
-
-
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST);
 
         addNewImgButton = view.findViewById(R.id.add_img_button);
         addNewImgButton.setOnClickListener(new View.OnClickListener() {
@@ -127,13 +130,9 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         });
 
         deleteBtn = view.findViewById(R.id.delete_button);
-
         setImgSwitcher();
-
-
         return view;
     }
-
 
     private void setImgSwitcher(){
         imgSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
