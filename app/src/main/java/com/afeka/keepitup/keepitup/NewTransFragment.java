@@ -31,8 +31,11 @@ import java.util.Date;
 
 public class NewTransFragment extends Fragment {
 
-    private static final int ALARAM = 100;
-    private static final String ARG_PARAM2 = "param2";
+    private final static String NAME_BUNDLE = "NAME";
+    private final static String EDIT_BUNDLE = "EDIT";
+    private final static String TYPE_BUNDLE = "TYPE";
+    private final static String TAG_START_PICKER = "dateStartPicker";
+    private final static String TAG_END_PICKER = "dateEndPicker";
     private Database db;
     private Spinner chargeTypeSpinner,notificSpinner, transTypeSpinner;
     private ImageView calendarStartDate,calendarEndDate;
@@ -59,9 +62,7 @@ public class NewTransFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static NewTransFragment newInstance(String param1, String param2) {
         NewTransFragment fragment = new NewTransFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -69,12 +70,6 @@ public class NewTransFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-       // Database db = new Database(getContext());
-       // Transaction t = new Transaction.TransactionBuilder(0,"Guy", Transaction.TransactionType.Provider,"Migdal", android.icu.util.Calendar.getInstance().getTime()).build();
-        //db.addTransaction(t);
-        //Transaction tran = db.getTransactionList(Transaction.TransactionType.Provider).get(0);
-        //Log.e("lala", tran.getName());
 
     }
 
@@ -112,7 +107,7 @@ public class NewTransFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 CalendarFragment newFragment = new CalendarFragment();
-                                newFragment.show(getActivity().getSupportFragmentManager(), "dateStartPicker");
+                                newFragment.show(getActivity().getSupportFragmentManager(), TAG_START_PICKER);
                 newFragment.setCallBack(onStartDate);
             }
         });
@@ -122,7 +117,7 @@ public class NewTransFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 CalendarFragment newFragment = new CalendarFragment();
-                newFragment.show(getActivity().getSupportFragmentManager(), "dateEndPicker");
+                newFragment.show(getActivity().getSupportFragmentManager(), TAG_END_PICKER);
                 newFragment.setCallBack(onEndDate);
 
             }
@@ -157,7 +152,7 @@ public class NewTransFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (createTrans()) {
-                    Snackbar snackbar = Snackbar.make(view,"Transaction was added!", BaseTransientBottomBar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(view,R.string.transAdded, BaseTransientBottomBar.LENGTH_LONG);
                     snackbar.show();
                     getFragmentManager().popBackStackImmediate();
                 }
@@ -207,7 +202,7 @@ public class NewTransFragment extends Fragment {
 
     private void setTransType(View view){
         Bundle bundle = getArguments();
-        transType = bundle.getInt("TYPE");
+        transType = bundle.getInt(TYPE_BUNDLE);
         Spinner typeSpinner = view.findViewById(R.id.typeTrans_spinner);
 
         if(transType != -1) {
@@ -286,8 +281,7 @@ public class NewTransFragment extends Fragment {
             if(details == -1)
                 db.removeTransaction(details);
 
-            long id = db.addTransaction(currentTransaction);
-
+            db.addTransaction(currentTransaction);
 
             if(notificSpinner.getSelectedItemPosition()!=0)
                 setAlarm(name.getText().toString());
@@ -334,15 +328,15 @@ public class NewTransFragment extends Fragment {
     private Boolean checkValidInfo(){
         errorView.setVisibility(View.GONE);
         if(!checkValidDate()) {
-            setErrorText("Invalid date!");//need to be in string file!!
+            setErrorText(getString(R.string.invalidDate));
             return false;
         }
         else if(name.getText().length() == 0){
-            setErrorText("Invalid name!"); //need to be in string file!!
+            setErrorText(getString(R.string.invalidName));
             return false;
         }
         else if(calEnd == null && notificSpinner.getSelectedItemPosition() != 0) {
-            setErrorText("End date is necessary for notification!");
+            setErrorText(getString(R.string.invalidEndDate));
             return false;
         }
 
@@ -392,7 +386,7 @@ public class NewTransFragment extends Fragment {
         dateToNotification.add(dateToNotification.DATE,subTimeDay);
 
         Intent intent = new Intent(getContext(),NotificationReceiver.class);
-        intent.putExtra("NAME",name);
+        intent.putExtra(NAME_BUNDLE,name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),currentTransaction.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+100,pendingIntent);
@@ -401,16 +395,17 @@ public class NewTransFragment extends Fragment {
 
     private void setDetails(){
         Bundle bundle = getArguments();
-        details = bundle.getInt("EDIT");
+        details = bundle.getInt(EDIT_BUNDLE);
 
         if(details != -1 ){
             Database db = new Database(this.getActivity().getBaseContext());
             Transaction transaction = db.getTransactionById(details);
 
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             name.setText(transaction.getName());
             companyName.setText(transaction.getCompany());
-            startDate.setText(transaction.getStartDate().toString());
-            endDate.setText(transaction.getEndDate().toString());
+            startDate.setText(df.format(transaction.getStartDate()));
+            endDate.setText(df.format(transaction.getEndDate()));
             notes.setText(transaction.getNotes());
         }
     }

@@ -182,7 +182,7 @@ public class Transaction {
             new Comparator<Transaction>() {
                 @Override
                 public int compare(Transaction t1, Transaction t2) {
-                    return t1.getName().compareTo(t2.getName());
+                    return t1.getName().toLowerCase().compareTo(t2.getName().toLowerCase());
                 }
 
             };

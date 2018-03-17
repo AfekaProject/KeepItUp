@@ -117,11 +117,12 @@ public class Database extends SQLiteOpenHelper {
     }*/
 public Transaction getTransactionById (int transactionId){
     SQLiteDatabase db = getReadableDatabase();
-    Transaction t;
+    Transaction t =null;
 
     Cursor cursor = db.rawQuery("SELECT * " +
             "FROM " + FeedTransaction.TABLE_NAME +
             " WHERE " + FeedTransaction._ID + "=" + transactionId , null);
+    if (cursor.moveToFirst())
     t = readTransactionCursor(cursor);
     cursor.close();
     t.setDocuments(getImages(t.getId()));

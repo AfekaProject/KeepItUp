@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 public class ImagesToShowFragment extends Fragment {
+    private final static String ID_BUNDLE = "ID";
     private ViewPager mPager;
     private ArrayList<Bitmap> imgArr = new ArrayList<>();// for checking!
+    private Database db;
     private int currentTransID;
-
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,8 +49,11 @@ public class ImagesToShowFragment extends Fragment {
      //   imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.arrowdown_icon));
       //  imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.noimage_icon));
 
-        currentTransID = getArguments().getInt("ID");
+        currentTransID = getArguments().getInt(ID_BUNDLE);
+        db = new Database(getContext());
+        imgArr = db.getTransactionById(currentTransID).getDocuments();
         mPager = view.findViewById(R.id.pager);
+        //System.out.println("num of images: " + db.getTransactionById(currentTransID).getDocuments().size() );
         ImageAdapter pagerAdapter = new ImageAdapter(getContext(),imgArr);
         mPager.setAdapter(pagerAdapter);
 

@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         myRef.child("Users").child(userId).setValue(listToBackup);
-        Toast.makeText(getBaseContext(), "Backup completed",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
     }
 
     public void checkLogin(View view) {

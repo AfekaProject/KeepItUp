@@ -18,6 +18,9 @@ import android.view.MenuItem;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,FragmentChangeListener {
+    private final static String SHOW_BUNDLE = "SHOW";
+    private final static String TYPE_BUNDLE = "TYPE";
+    private final static String ID_BUNDLE = "ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +30,7 @@ public class MenuActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //check if get bundle from notification receiver
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            int transId = bundle.getInt("SHOW");
-            TransactionShowFragment showFragment = new TransactionShowFragment();
-            Bundle myBundle = new Bundle();
-            myBundle.putInt("ID",transId);
-            showFragment.setArguments(myBundle);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-
-        }
+        notificationBundle();
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,7 +53,22 @@ public class MenuActivity extends AppCompatActivity
         });
 
     }
+    private void notificationBundle(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            int transId = bundle.getInt(SHOW_BUNDLE);
+            TransactionShowFragment showFragment = new TransactionShowFragment();
+            Bundle myBundle = new Bundle();
+            myBundle.putInt(ID_BUNDLE,transId);
+            showFragment.setArguments(myBundle);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
+        }
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer =findViewById(R.id.drawer_layout);
@@ -103,7 +109,7 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         android.support.v4.app.Fragment currentFragment = null;
-        Class fragmentClass = null;
+        Class fragmentClass;
         int transType = -1;
         boolean backUpFlag = false;
         fragmentClass = TabsFragment.class;
@@ -128,7 +134,7 @@ public class MenuActivity extends AppCompatActivity
             }
 
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE",transType);
+            bundle.putInt(TYPE_BUNDLE,transType);
             currentFragment.setArguments(bundle);
             // Insert the fragment by replacing any existing fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -143,9 +149,6 @@ public class MenuActivity extends AppCompatActivity
             // Close the navigation drawer
             drawer.closeDrawers();
 
-      /*  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        */
         }
 
         return true;

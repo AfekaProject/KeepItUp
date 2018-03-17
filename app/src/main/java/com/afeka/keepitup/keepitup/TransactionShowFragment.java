@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 
 public class TransactionShowFragment extends Fragment {
     private Database db;
     private int transactionID;
     private Transaction currentTranscation;
-    private TextView name, company, startDate, endDate, notification, notes;
+    private TextView name, company, startDate, endDate, notification, notes, chargeType;
     private OnFragmentInteractionListener mListener;
     private View toImgButton;
     private Button editButton;
@@ -90,9 +93,19 @@ public class TransactionShowFragment extends Fragment {
         company = view.findViewById(R.id.company_textView);
         startDate = view.findViewById(R.id.fromDate_textView);
         endDate = view.findViewById(R.id.toDate_textView);
+        chargeType = view.findViewById(R.id.charge_textView);
         notification = view.findViewById(R.id.notification_textView);
+        notes = view.findViewById(R.id.notes_textView);
 
-        name.setText(getResources().getText(R.string.name) + currentTranscation.getName());
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        name.setText(currentTranscation.getName());
+        company.setText(currentTranscation.getCompany());
+        startDate.setText(df.format(currentTranscation.getStartDate()));
+        endDate.setText(df.format(currentTranscation.getEndDate()));
+        chargeType.setText(currentTranscation.getChargeType().toString());
+        notification.setText(currentTranscation.getNotification().toString());
+        notes.setText(currentTranscation.getNotes());
 
     }
 

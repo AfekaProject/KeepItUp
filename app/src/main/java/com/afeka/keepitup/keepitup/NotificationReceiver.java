@@ -12,16 +12,19 @@ import android.support.v4.app.NotificationManagerCompat;
 
 public class NotificationReceiver extends BroadcastReceiver{
     private static final String NOTIFICATION_ID = "notification_id";
+    private static final String ID_BUNDLE = "ID";
+    private static final String NAME_BUNDLE = "NAME";
+    private static final String SHOW_BUNDLE = "SHOW";
     private static final int REQUEST_CODE = 0;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int transID = intent.getExtras().getInt("ID");
-        String transName = intent.getExtras().getString("NAME");
+        int transID = intent.getExtras().getInt(ID_BUNDLE);
+        String transName = intent.getExtras().getString(NAME_BUNDLE);
 
         Intent menuIntent = new Intent(context, MenuActivity.class);
-        menuIntent.putExtra("SHOW",transID);
+        menuIntent.putExtra(SHOW_BUNDLE,transID);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,REQUEST_CODE,menuIntent,0);
 
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context,NOTIFICATION_ID).
