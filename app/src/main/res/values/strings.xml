@@ -49,5 +49,7 @@
     <string name="price_title">Total price </string>
     <string name="charge_title">Charge type </string>
     <string name="newTrans_title">New Transaction </string>
+    <string name="fromTo">-</string>
+    <string name="totalImg">Total Images</string>
 
 </resources>

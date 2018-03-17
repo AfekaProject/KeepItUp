@@ -74,7 +74,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
-        db = new Database(getContext());
+        db = new Database(getActivity().getBaseContext());
         getTransactionType();
         cardAdapter = new CardViewAdapter(getContext(),transToShow);
         buildRecycleView(view);
@@ -181,6 +181,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
+                        db.removeTransaction(transToShow.get(lastPosition).getId());
                         transToShow.remove(lastPosition);
                         cardAdapter.notifyDataSetChanged();
                         break;
@@ -237,12 +238,19 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         }
 
 */
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cardAdapter.notifyDataSetChanged();
     }
 
     @Override

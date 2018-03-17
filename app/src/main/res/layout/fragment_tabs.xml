@@ -33,13 +33,13 @@
             <Spinner
 
                 android:id="@+id/spinner_filter"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/filter_view"
                 android:background="@color/fui_transparent"
                 android:focusableInTouchMode="false"
                 android:layout_below="@id/search_view"
-                android:padding="8dp"
+                android:padding="11dp"
                 android:spinnerMode="dialog" />
 
 

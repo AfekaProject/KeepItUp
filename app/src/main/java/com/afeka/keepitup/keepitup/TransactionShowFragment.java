@@ -18,6 +18,7 @@ public class TransactionShowFragment extends Fragment {
     private TextView name, company, startDate, endDate, notification, notes;
     private OnFragmentInteractionListener mListener;
     private View toImgButton;
+    private Button editButton;
 
     public TransactionShowFragment() {
         // Required empty public constructor
@@ -42,7 +43,7 @@ public class TransactionShowFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_show, container, false);
         setTransactionID();
-
+        setInfo(view);
         toImgButton = view.findViewById(R.id.watchImg_button);
 
         toImgButton.setOnClickListener(new View.OnClickListener() {
@@ -56,18 +57,32 @@ public class TransactionShowFragment extends Fragment {
             }
         });
 
+        editButton = view.findViewById(R.id.edit_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("EDIT",transactionID);
+                NewTransFragment newTransFragment = new NewTransFragment();
+                newTransFragment.setArguments(bundle);
+                ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
+            }
+        });
 
         return view;
     }
 
     private void setTransactionID(){
         Bundle bundle = getArguments();
-        if(bundle != null)
-        transactionID = bundle.getInt("ID");
+        if(bundle != null) {
+            transactionID = bundle.getInt("ID");
 
-        //get transaction from db by id
+            //get transaction from db by id
+            db = new Database(getContext());
+            System.out.println("ID to show: " + transactionID);
+            currentTranscation = db.getTransactionById(transactionID);
 
-
+        }
     }
 
     private void setInfo(View view){

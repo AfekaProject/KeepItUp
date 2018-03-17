@@ -29,6 +29,8 @@ import com.bumptech.glide.load.engine.Resource;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -66,20 +68,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    /*@Override
-    public int getCount() {
-        return cardsToShow.size();
-    }
 
-    @Override
-    public Object getItem(int i) {
-        return cardsToShow.get(i);
-    }*/
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      //  View itemView = inflater.inflate(R.layout.my_card,
-       //         parent, false);
         View itemView = inflater.from(parent.getContext())
                 .inflate(R.layout.my_card, parent, false);
 
@@ -98,8 +90,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         else
             cardView.setBackgroundResource(R.drawable.roundcard);
 
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
         holder.nameTextView.setText(currentTrans.getName());
-        holder.startDateTextView.setText(currentTrans.getStartDate().toString());
+        holder.startDateTextView.setText(df.format(currentTrans.getStartDate()));
         holder.company.setText(currentTrans.getCompany());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

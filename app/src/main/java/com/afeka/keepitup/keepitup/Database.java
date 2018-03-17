@@ -65,7 +65,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String SQL_DELETE_IMAGES =
             "DROP TABLE IF EXISTS " + FeedImages.TABLE_NAME;
 
-    public void addTransaction (Transaction transaction){
+    public long addTransaction (Transaction transaction){
         ContentValues values = new ContentValues();
         values.put(FeedTransaction.COLUMN_NAME_NAME,transaction.getName());
         values.put(FeedTransaction.COLUMN_NAME_TYPE,transaction.getType().toString());
@@ -85,6 +85,8 @@ public class Database extends SQLiteOpenHelper {
         long id = db.insert(FeedTransaction.TABLE_NAME,null,values);
         db.close();
         addImages(id,transaction.getDocuments());
+
+        return id;
     }
 
     public void removeTransaction (int id){
@@ -95,7 +97,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Transaction getTransactionById (int transactionId){
+/*    public Transaction getTransactionById (int transactionId){
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = {FeedTransaction._ID,FeedTransaction.COLUMN_NAME_NAME,
                 FeedTransaction.COLUMN_NAME_TYPE,FeedTransaction.COLUMN_NAME_COMPANY,
@@ -108,8 +110,24 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query(FeedTransaction.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
         Transaction t = readTransactionCursor(cursor);
         t.setDocuments(getImages(t.getId()));
+
+        cursor.close();
+        db.close();
         return t;
-    }
+    }*/
+public Transaction getTransactionById (int transactionId){
+    SQLiteDatabase db = getReadableDatabase();
+    Transaction t;
+
+    Cursor cursor = db.rawQuery("SELECT * " +
+            "FROM " + FeedTransaction.TABLE_NAME +
+            " WHERE " + FeedTransaction._ID + "=" + transactionId , null);
+    t = readTransactionCursor(cursor);
+    cursor.close();
+    t.setDocuments(getImages(t.getId()));
+    db.close();
+    return t;
+}
 
     public ArrayList<Bitmap> getImages (int id){
         ArrayList<Bitmap> images = new ArrayList<>();
@@ -118,11 +136,15 @@ public class Database extends SQLiteOpenHelper {
         String selection = FeedImages.COLUMN_NAME_TRANSACTION_ID +"=?";
         String[] selectionArgs = {id+""};
         Cursor cursor = db.query(FeedImages.TABLE_NAME,projection,selection,selectionArgs,null,null,null);
-        while( cursor.moveToNext()){
+        if (!cursor.moveToFirst())
+            cursor.moveToFirst();
+        while(cursor.moveToNext()){
             byte[] imgByte = cursor.getBlob(cursor.getColumnIndexOrThrow(FeedImages.COLUMN_NAME_FILE));
             Bitmap bitmap = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
             images.add(bitmap);
         }
+        cursor.close();
+        db.close();
         return images;
     }
 
@@ -144,6 +166,8 @@ public class Database extends SQLiteOpenHelper {
         for (int i = 0 ; i<list.size() ; i++){
             list.get(i).setDocuments(getImages(list.get(i).getId()));
         }
+        db.close();
+        cursor.close();
         return list;
     }
 

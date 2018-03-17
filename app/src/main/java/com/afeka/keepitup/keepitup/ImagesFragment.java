@@ -211,7 +211,10 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
           //  Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");
             Bitmap imageBitmap = getImageFromResult(getActivity(), resultCode, data);
-            bmList.add(imageBitmap);
+            if(bmList.size() < MAX_IMGS){
+                bmList.add(imageBitmap);
+                switcherPosition++;
+            }
             Drawable drawable = new BitmapDrawable(getContext().getResources(), imageBitmap);
             imgSwitcher.setImageDrawable(drawable);
         }
@@ -325,8 +328,8 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     }
 
     private static Bitmap getImageResized(Context context, Uri selectedImage) {
-        Bitmap bm = null;
-        int[] sampleSizes = new int[]{5, 3, 2, 1};
+        Bitmap bm;
+        int[] sampleSizes = new int[]{20, 20, 2, 1};
         int i = 0;
         do {
             bm = decodeBitmap(context, selectedImage, sampleSizes[i]);

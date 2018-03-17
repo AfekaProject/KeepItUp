@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.afeka.keepitup.keepitup">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera" />
 
 
+
+
+
     <application
+
+
         android:testOnly="false"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +25,15 @@
         android:windowSoftInputMode="adjustResize"
 
         android:theme="@style/AppTheme">
+
+
+        <receiver android:name="com.afeka.keepitup.keepitup.NotificationReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
@@ -27,9 +41,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+
 
     </application>
 

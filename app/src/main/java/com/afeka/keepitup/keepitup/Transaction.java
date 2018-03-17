@@ -112,7 +112,7 @@ public class Transaction {
         if(endDate == null)
             return false;
         else{
-            if(endDate.after(currentDate))
+            if(endDate.getTime() - currentDate.getTime() > 0)
                 return false;
             else
                 return true;
@@ -199,7 +199,7 @@ public class Transaction {
             new Comparator<Transaction>() {
                 @Override
                 public int compare(Transaction t1, Transaction t2) {
-                    return t1.getId() - t2.getId();
+                    return t2.getId() - t1.getId();
                 }
 
             };

@@ -47,7 +47,7 @@ public class ImageAdapter extends PagerAdapter{
         View imgLayout = inflater.inflate(R.layout.sliding_img, container, false);
 
         ImageView imgView = imgLayout.findViewById(R.id.image_sliding);
-        imgView.setImageBitmap(getResizedBitmap(imgArr.get(position), container.getMeasuredWidth(),container.getMeasuredHeight()));
+        imgView.setImageBitmap(getResizedBitmap(imgArr.get(position), 200,200));
 
         container.addView(imgLayout,0);
 

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,17 +34,15 @@ public class NewTransFragment extends Fragment {
     private static final int ALARAM = 100;
     private static final String ARG_PARAM2 = "param2";
     private Database db;
-    private Spinner chargeTypeSpinner;
-    private Spinner notificSpinner;
+    private Spinner chargeTypeSpinner,notificSpinner, transTypeSpinner;
     private ImageView calendarStartDate,calendarEndDate;
     private EditText startDate,endDate;
     private Button addImgButton,submitBtn;
     private TextView numOfImgView;
     private ArrayList<Bitmap> bmList;
-    private Date calStart, calEnd;
+    private Date calStart = null, calEnd = null;
     private TextView errorView, name, companyName, price, notes;
-    private int transType;
-    private int details;
+    private int transType, details;
     private Transaction currentTransaction;
 
 
@@ -92,6 +90,8 @@ public class NewTransFragment extends Fragment {
             numOfImgView.setText(Integer.toString(bmList.size() ));
 
         setTransType(view);
+        //type spinner
+        transTypeSpinner = view.findViewById(R.id.typeTrans_spinner);
         //initial charge spinner
         chargeTypeSpinner = view.findViewById(R.id.charge_spinner);
         ArrayAdapter<CharSequence> chargeAdapter = ArrayAdapter.createFromResource(getActivity(),
@@ -166,6 +166,9 @@ public class NewTransFragment extends Fragment {
             }
         });
 
+
+
+
         return view;
     }
    FragmentCallback fragmentCallback = new FragmentCallback() {
@@ -183,7 +186,8 @@ public class NewTransFragment extends Fragment {
             cal.set(Calendar.MONTH, month);
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             calStart = cal.getTime();
-            startDate.setText(dayOfMonth+"/"+month+"/"+year);
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            startDate.setText(df.format(calStart));
         }
     };
 
@@ -195,8 +199,8 @@ public class NewTransFragment extends Fragment {
             cal.set(Calendar.MONTH, month);
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             calEnd = cal.getTime();
-
-            endDate.setText(dayOfMonth+"/"+month+"/"+year);
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            endDate.setText(df.format(calEnd));
         }
     };
 
@@ -214,10 +218,12 @@ public class NewTransFragment extends Fragment {
     }
 
     private Boolean createTrans(){
+        transType = transTypeSpinner.getSelectedItemPosition();
         if(checkValidInfo()) {
             Transaction.TransactionBuilder transaction =
                     new Transaction.TransactionBuilder(0, name.getText().toString(),
-                            Transaction.TransactionType.Insurance, companyName.getText().toString(), calStart);
+                            Transaction.TransactionType.values()[transType]
+                            , companyName.getText().toString(), calStart);
 
             if (calEnd != null)
                 transaction.setEndDate(calEnd);
@@ -225,6 +231,7 @@ public class NewTransFragment extends Fragment {
                 transaction.setPrice(Double.parseDouble(price.getText().toString()));
             else if(notes.getText().length() > 0)
                 transaction.setNotes(notes.getText().toString());
+
 
 
             int position = notificSpinner.getSelectedItemPosition();
@@ -270,9 +277,20 @@ public class NewTransFragment extends Fragment {
                     break;
             }
 
+
+            transaction.setDocuments(bmList);
+
             currentTransaction = transaction.build();
             db = new Database(getContext());
-            db.addTransaction(currentTransaction);
+
+            if(details == -1)
+                db.removeTransaction(details);
+
+            long id = db.addTransaction(currentTransaction);
+
+
+            if(notificSpinner.getSelectedItemPosition()!=0)
+                setAlarm(name.getText().toString());
 
                 return true;
 
@@ -316,24 +334,32 @@ public class NewTransFragment extends Fragment {
     private Boolean checkValidInfo(){
         errorView.setVisibility(View.GONE);
         if(!checkValidDate()) {
-            errorView.setVisibility(View.VISIBLE);
-            errorView.setText("Invalid date!"); //need to be in string file!!
+            setErrorText("Invalid date!");//need to be in string file!!
             return false;
         }
         else if(name.getText().length() == 0){
-            errorView.setVisibility(View.VISIBLE);
-            errorView.setTextColor(getResources().getColor(R.color.red));
-            errorView.setText("Invalid name!"); //need to be in string file!!
+            setErrorText("Invalid name!"); //need to be in string file!!
             return false;
         }
+        else if(calEnd == null && notificSpinner.getSelectedItemPosition() != 0) {
+            setErrorText("End date is necessary for notification!");
+            return false;
+        }
+
         return true;
+    }
 
-
+    private void setErrorText(String errorToShow){
+        errorView.setVisibility(View.VISIBLE);
+        errorView.setTextColor(getResources().getColor(R.color.red));
+        errorView.setText(errorToShow);
     }
 
     private Boolean checkValidDate() {
         if (calStart != null && calEnd != null) {
-            if (calStart.getTime() > calEnd.getTime())
+            if (calEnd.getTime() - calStart.getTime() > 0)
+                return true;
+            else
                 return false;
         }
         else if(calStart!=null)
@@ -343,13 +369,34 @@ public class NewTransFragment extends Fragment {
 
     }
 
-    private void setAlaram(){
+    private void setAlarm(String name){
+        int notificationTime = notificSpinner.getSelectedItemPosition(), subTimeDay=0;
+
+        switch (notificationTime){
+            case 1:
+                subTimeDay = -1;
+                break;
+            case 2:
+                subTimeDay = -2;
+                break;
+            case 3:
+                subTimeDay = -3;
+                break;
+            case 4:
+                subTimeDay = -7;
+                break;
+        }
+
+        Calendar dateToNotification = Calendar.getInstance();
+        dateToNotification.setTime(calEnd);
+        dateToNotification.add(dateToNotification.DATE,subTimeDay);
+
         Intent intent = new Intent(getContext(),NotificationReceiver.class);
+        intent.putExtra("NAME",name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),currentTransaction.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-
-
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+100,pendingIntent);
+        System.out.println("Notification for " + currentTransaction.getId() + " was added!");
     }
 
     private void setDetails(){

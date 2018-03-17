@@ -26,7 +26,20 @@ public class MenuActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //check if get bundle from notification receiver
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            int transId = bundle.getInt("SHOW");
+            TransactionShowFragment showFragment = new TransactionShowFragment();
+            Bundle myBundle = new Bundle();
+            myBundle.putInt("ID",transId);
+            showFragment.setArguments(myBundle);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
 
+        }
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -151,14 +164,6 @@ public class MenuActivity extends AppCompatActivity
     }
 
 
-    public void showAddActivity(View view) {
-        //Intent intent = new Intent(getBaseContext(),AddTransaction.class);
-       // startActivity(intent);
-    }
-
-    public void addTransaction(View view) {
-
-    }
 }
 
 interface FragmentChangeListener
