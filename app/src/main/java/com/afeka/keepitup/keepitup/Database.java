@@ -49,8 +49,14 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_IMAGES);
     }
 
+    public void addBackup(ArrayList<Transaction> arrayList){
+        for (int i = 0 ; i< arrayList.size() ; i++){
+            addTransaction(arrayList.get(i));
+        }
+    }
 
-    public int addTransaction (Transaction transaction,Context context){
+
+    public int addTransaction (Transaction transaction){
         ContentValues values = new ContentValues();
         values.put(FeedTransaction.COLUMN_NAME_NAME,transaction.getName());
         values.put(FeedTransaction.COLUMN_NAME_TYPE,transaction.getType().toString());
@@ -69,7 +75,7 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         int id = (int)db.insert(FeedTransaction.TABLE_NAME,null,values);
         db.close();
-        addImages(id,transaction.getDocuments(),context);
+        addImages(id,transaction.getDocuments());
 
         return id;
     }
@@ -168,14 +174,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    private void addImages (long id, ArrayList<Bitmap> images,Context context){
+    private void addImages (long id, ArrayList<Bitmap> images){
         if (images==null)
             return;
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         for (int i = 0 ; i <  images.size() ; i++){
             String name = id + "_" + i + "image";
-            String converted = saveImageToDevice(name,images.get(i),context);
+            String converted = saveImageToDevice(name,images.get(i));
             values.put(FeedImages.COLUMN_NAME_TRANSACTION_ID,id);
             values.put(FeedImages.COLUMN_NAME_FILE,converted);
             db.insert(FeedImages.TABLE_NAME,null,values);
@@ -183,14 +189,14 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    private String saveImageToDevice(String name,Bitmap image,Context context){
-        //File internalStorage = context.getDir(IMAGE_FOLDER, Context.MODE_PRIVATE);
+    private String saveImageToDevice(String name,Bitmap image){
+
         String external = Environment.getExternalStorageDirectory().toString();
         File directory = new File (external+"/"+IMAGE_FOLDER);
         directory.mkdirs();
         String fName = name +".jpg";
         File file = new File(directory,fName);
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         String imagePath;
         try {
             fos = new FileOutputStream(file);

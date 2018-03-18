@@ -281,7 +281,7 @@ public class NewTransFragment extends Fragment {
             if(details == -1)
                 db.removeTransaction(details);
 
-            db.addTransaction(currentTransaction,getContext());
+            db.addTransaction(currentTransaction);
 
             if(notificSpinner.getSelectedItemPosition()!=0)
                 setAlarm(name.getText().toString());

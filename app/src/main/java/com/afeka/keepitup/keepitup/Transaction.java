@@ -11,9 +11,10 @@ import java.util.Date;
 
 public class Transaction {
 
-    enum  TransactionType {Insurance, Warranty , Provider}
-    enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
-    enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
+    public enum  TransactionType {Insurance,Warranty , Provider}
+    public enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
+    public enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
+
 
     //required parameters
     private int id;
@@ -29,6 +30,23 @@ public class Transaction {
     private double price;
     private ChargeType chargeType;
     private ForwardNotification notification;
+
+    public Transaction(){
+
+    }
+
+    public Transaction(TransactionAdapter ta){
+        this.id = ta.getId();
+        this.name = ta.getName();
+        this.type = ta.getType();
+        this.company = ta.getCompany();
+        this.startDate = ta.getStartDate();
+        this.endDate = ta.getEndDate();
+        this.notes = ta.getNotes();
+        this.price = ta.getPrice();
+        setChargeType(ta.getChargeType());
+        setNotification(ta.getNotification());
+    }
 
     private Transaction(TransactionBuilder builder) {
         this.id = builder.id;
