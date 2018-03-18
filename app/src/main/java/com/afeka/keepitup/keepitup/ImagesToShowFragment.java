@@ -1,16 +1,20 @@
 package com.afeka.keepitup.keepitup;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ImagesToShowFragment extends Fragment {
@@ -54,6 +58,14 @@ public class ImagesToShowFragment extends Fragment {
         imgArr = db.getTransactionById(currentTransID).getDocuments();
         mPager = view.findViewById(R.id.pager);
         System.out.println("num of images: " + imgArr.size() );
+
+        ArrayList<Bitmap> imgToShow =new ArrayList<>();
+
+
+        for(int i=0; i <imgToShow.size(); i++){
+            imgToShow.add(getImageResized(getContext(),getImageUri(getContext(),imgArr.get(i))));
+        }
+
         ImageAdapter pagerAdapter = new ImageAdapter(getContext(),imgArr);
         mPager.setAdapter(pagerAdapter);
 
@@ -61,6 +73,38 @@ public class ImagesToShowFragment extends Fragment {
         return view;
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    private static Bitmap getImageResized(Context context, Uri selectedImage) {
+        Bitmap bm;
+        int[] sampleSizes = new int[]{50, 50, 2, 1};
+        int i = 0;
+        do {
+            bm = decodeBitmap(context, selectedImage, sampleSizes[i]);
+            i++;
+        } while (bm.getWidth() < 400 && i < sampleSizes.length);
+        return bm;
+    }
+    private static Bitmap decodeBitmap(Context context, Uri theUri, int sampleSize) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = sampleSize;
+
+        AssetFileDescriptor fileDescriptor = null;
+        try {
+            fileDescriptor = context.getContentResolver().openAssetFileDescriptor(theUri, "r");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap actuallyUsableBitmap = BitmapFactory.decodeFileDescriptor(
+                fileDescriptor.getFileDescriptor(), null, options);
+
+        return actuallyUsableBitmap;
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
