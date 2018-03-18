@@ -138,16 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             t.setDocumentsFromBitmap(listToBackup.get(i).getDocuments());
             DatabaseReference transactionRef = userDataRef.child(TRANSACTIONS_TABLE).child(i+"");
             transactionRef.setValue(t);
-            //uploadImages(t.getDocuments(),transactionRef);
 
-/*
-            ArrayList<Bitmap> imagesArr = listToBackup.get(i).getDocuments();
-            for (int j = 0 ; j < imagesArr.size() ; j++){
-                String fileName = listToBackup.get(i).getId() +
-                        "_Image_" + j + ".jpg";
-                t.getDocuments().add(uploadImage(fileName,imagesArr.get(j)));
-            }
-            */
         }
         Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
     }
