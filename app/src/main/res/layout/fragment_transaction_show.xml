@@ -272,7 +272,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
-            android:text="EDIT"
+            android:text="@string/edit"
             android:textSize="20sp"
             android:paddingTop="12dp"
             android:textAlignment="center"

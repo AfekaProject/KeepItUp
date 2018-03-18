@@ -52,7 +52,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
                 android:padding="10dp"
-                android:text="Sort by "
+                android:text="@string/sort_by"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
