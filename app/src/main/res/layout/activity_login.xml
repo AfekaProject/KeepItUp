@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:background="@drawable/button"
             android:fontFamily="@font/revolution"
             android:onClick="backupToFirebase"
+            android:enabled="false"
             android:text="@string/backup"
             android:textColor="@color/blue"
             android:textSize="22sp"
@@ -36,6 +38,7 @@
             android:background="@drawable/button"
             android:fontFamily="@font/revolution"
             android:onClick="restoreFromFirebase"
+            android:enabled="false"
             android:text="@string/restore"
             android:textColor="@color/blue"
             android:textSize="22sp"

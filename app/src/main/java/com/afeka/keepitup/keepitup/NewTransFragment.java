@@ -21,13 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 
 public class NewTransFragment extends Fragment {
 
@@ -163,14 +161,8 @@ public class NewTransFragment extends Fragment {
 
                     ((MenuActivity)getActivity()).replaceFragment(tabsFragment);
                 }
-
-
             }
         });
-
-
-
-
         return view;
     }
    FragmentCallback fragmentCallback = new FragmentCallback() {
@@ -207,7 +199,6 @@ public class NewTransFragment extends Fragment {
         }
     };
 
-
     private void setTransType(View view){
         Bundle bundle = getArguments();
         transType = bundle.getInt(TYPE_BUNDLE);
@@ -217,7 +208,6 @@ public class NewTransFragment extends Fragment {
             typeSpinner.setSelection(transType);
             typeSpinner.setEnabled(false);
         }
-
     }
 
     private Boolean createTrans(){

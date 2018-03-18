@@ -2,9 +2,6 @@ package com.afeka.keepitup.keepitup;
 
 import android.graphics.Bitmap;
 import android.util.Base64;
-
-import com.afeka.keepitup.keepitup.Transaction;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;

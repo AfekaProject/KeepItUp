@@ -2,8 +2,6 @@ package com.afeka.keepitup.keepitup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -98,7 +96,6 @@ public class MenuActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-
         }
 
     }
@@ -136,8 +133,6 @@ public class MenuActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -184,14 +179,9 @@ public class MenuActivity extends AppCompatActivity
             setTitle(item.getTitle());
             // Close the navigation drawer
             drawer.closeDrawers();
-
         }
-
         return true;
     }
-
-
-
 
     @Override
     public void replaceFragment(android.support.v4.app.Fragment fragment) {
@@ -199,10 +189,7 @@ public class MenuActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.flContent, fragment).commit();
         fragmentTransaction.addToBackStack(fragment.toString());
-
     }
-
-
 }
 
 interface FragmentChangeListener

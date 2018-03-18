@@ -9,7 +9,6 @@ import java.util.Calendar;
 
 public class CalendarFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 {
-
     private DatePickerDialog.OnDateSetListener onDateSet;
     private int year,month,day;
 
