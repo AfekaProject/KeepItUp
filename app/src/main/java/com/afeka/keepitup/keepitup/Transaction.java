@@ -89,10 +89,12 @@ public class Transaction {
 
     private void setDocumentsFromString(ArrayList<String> documents) {
         this.documents = new ArrayList<>();
-        for (int i = 0 ; i<documents.size();i++){
-            byte[] decodedString = Base64.decode(documents.get(i), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            this.documents.add(decodedByte);
+        if (documents!=null){
+            for (int i = 0 ; i<documents.size();i++){
+                byte[] decodedString = Base64.decode(documents.get(i), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                this.documents.add(decodedByte);
+            }
         }
     }
 

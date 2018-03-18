@@ -85,17 +85,7 @@ public class Database extends SQLiteOpenHelper {
     public Transaction getTransactionById (int transactionId){
         SQLiteDatabase db = getReadableDatabase();
         Transaction t = null;
-/*
-        String[] projection = {FeedTransaction._ID,FeedTransaction.COLUMN_NAME_NAME,
-                FeedTransaction.COLUMN_NAME_TYPE,FeedTransaction.COLUMN_NAME_COMPANY,
-                FeedTransaction.COLUMN_NAME_START_DATE,FeedTransaction.COLUMN_NAME_END_DATE,
-                FeedTransaction.COLUMN_NAME_NOTES,FeedTransaction.COLUMN_NAME_PRICE,
-                FeedTransaction.COLUMN_NAME_CHARGE_TYPE,FeedTransaction.COLUMN_NAME_NOTIFICATION};
-        String selection = FeedTransaction._ID +"= ?";
-        String[] selectionArgs = {transactionId+""};
-        String sortOrder = FeedTransaction.COLUMN_NAME_START_DATE + " DESC";
-        Cursor cursor = db.query(FeedTransaction.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
-        */
+
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + FeedTransaction.TABLE_NAME +
                 " WHERE " + FeedTransaction._ID + "=" + transactionId , null);
