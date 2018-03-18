@@ -389,7 +389,7 @@ public class NewTransFragment extends Fragment {
         intent.putExtra(NAME_BUNDLE,name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),currentTransaction.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+100,pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, dateToNotification.getTimeInMillis(),pendingIntent);
         System.out.println("Notification for " + currentTransaction.getId() + " was added!");
     }
 
@@ -412,20 +412,17 @@ public class NewTransFragment extends Fragment {
             numOfImgView.setText(Integer.toString(transaction.getDocuments().size()));
 
             switch (transaction.getChargeType()){
-                case None:
+                case Cash:
                     chargeTypeSpinner.setSelection(0);
                     break;
-                case Cash:
+                case CreditCard:
                     chargeTypeSpinner.setSelection(1);
                     break;
-                case CreditCard:
+                case BankCheck:
                     chargeTypeSpinner.setSelection(2);
                     break;
-                case BankCheck:
-                    chargeTypeSpinner.setSelection(3);
-                    break;
                 case StandingOrder:
-                    chargeTypeSpinner.setSelection(4);
+                    chargeTypeSpinner.setSelection(3);
                     break;
             }
 

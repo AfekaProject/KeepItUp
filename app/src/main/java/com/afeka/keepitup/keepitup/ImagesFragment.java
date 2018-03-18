@@ -137,6 +137,8 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                 return imgView;
             }
         });
+        if(bmList == null)
+            bmList = new ArrayList<>();
 
         if(!bmList.isEmpty())
         imgSwitcher.setImageDrawable(new BitmapDrawable(getContext().getResources(), bmList.get(0)));
@@ -212,32 +214,9 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         }
 
 
-        /*
-        super.onActivityResult(requestCode, resultCode, data);
-
-            switch (requestCode) {
-                case REQUEST_IMG_ID:
-                    Bitmap bitmap = getImageFromResult(getActivity(), resultCode, data);
-                    Drawable drawable = new BitmapDrawable(getContext().getResources(), bitmap);
-
-                    imgSwitcher.setImageDrawable(drawable);
-
-                    if(bmList.size() < MAX_IMGS){
-                        bmList.add(bitmap);
-                        switcherPosition++;
-                    }
-
-                    break;
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
-                    break;
-            }
-*/
-
-
     }
 
-    public static Bitmap getImageFromResult(Context context, int resultCode,
+    public  Bitmap getImageFromResult(Context context, int resultCode,
                                             Intent imageReturnedIntent) {
         Bitmap bm = null;
         File imageFile = getTempFile(context);
@@ -252,7 +231,6 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
             } else {
                 selectedImage = imageReturnedIntent.getData();
             }
-
 
             bm = getImageResized(context, selectedImage);
             int rotation = getRotation(context, selectedImage, isCamera);
@@ -321,7 +299,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
 
     private static Bitmap getImageResized(Context context, Uri selectedImage) {
         Bitmap bm;
-        int[] sampleSizes = new int[]{20, 20, 2, 1};
+        int[] sampleSizes = new int[]{50, 50, 1, 1};
         int i = 0;
         do {
             bm = decodeBitmap(context, selectedImage, sampleSizes[i]);

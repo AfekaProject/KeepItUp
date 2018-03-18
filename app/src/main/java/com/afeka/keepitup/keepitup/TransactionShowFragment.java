@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 
 
 public class TransactionShowFragment extends Fragment {
+    private static final String ID_BUNDLE = "ID";
+    private static final String EDIT_BUNDLE = "EDIT";
     private Database db;
     private int transactionID;
     private Transaction currentTransaction;
@@ -53,7 +55,7 @@ public class TransactionShowFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("ID",transactionID);
+                bundle.putInt(ID_BUNDLE,transactionID);
                 ImagesToShowFragment imagesToShowFragment = new ImagesToShowFragment();
                 imagesToShowFragment.setArguments(bundle);
                 ((MenuActivity)getActivity()).replaceFragment(imagesToShowFragment);
@@ -65,7 +67,7 @@ public class TransactionShowFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("EDIT",transactionID);
+                bundle.putInt(EDIT_BUNDLE,transactionID);
                 NewTransFragment newTransFragment = new NewTransFragment();
                 newTransFragment.setArguments(bundle);
                 ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
@@ -78,7 +80,7 @@ public class TransactionShowFragment extends Fragment {
     private void setTransactionID(){
         Bundle bundle = getArguments();
         if(bundle != null) {
-            transactionID = bundle.getInt("ID");
+            transactionID = bundle.getInt(ID_BUNDLE);
 
             //get transaction from db by id
             db = new Database(getContext());
@@ -107,7 +109,7 @@ public class TransactionShowFragment extends Fragment {
         chargeType.setText(currentTransaction.getChargeType().toString());
         notification.setText(currentTransaction.getNotification().toString());
         notes.setText(currentTransaction.getNotes());
-        numOfImg.setText(R.string.numOfImg + currentTransaction.getDocuments().size());
+        numOfImg.setText(getString(R.string.numOfImg) +" " +  Integer.toString(currentTransaction.getDocuments().size()));
 
     }
 

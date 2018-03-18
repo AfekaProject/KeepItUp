@@ -51,7 +51,7 @@ public class MainFragment extends Fragment {
 
     private void setAnimationBalloons(View view) {
         balloon1 = view.findViewById(R.id.balloon_img);
-        Animation fadeIn = new AlphaAnimation(0, 1);
+        final Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
         fadeIn.setDuration(1000);
 
@@ -61,10 +61,10 @@ public class MainFragment extends Fragment {
         fadeOut.setDuration(3000);
 
         AnimationSet animation = new AnimationSet(false); //change to false
+        animation.setRepeatCount(1);
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
 
-        final int counter=0;
 
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -74,14 +74,11 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(counter == 0)
+
              balloon1.setImageResource(R.drawable.balloon2);
-                else
-                    balloon1.setImageResource(R.drawable.balloon);
 
-           //     counter++;
 
-            balloon1.startAnimation(animation);
+            balloon1.startAnimation(fadeIn);
             }
 
             @Override
