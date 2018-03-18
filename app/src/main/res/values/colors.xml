@@ -6,7 +6,8 @@
     <color name="colorAccent">#d572ff</color>
     <color name="white">#ffffff</color>
     <color name="grey_blue">#ce5a789c</color>
-    <color name="delete_red">#972828</color>
+    <color name="delete_red">#681111</color>
+    <color name="edit_green">#1d864a</color>
     <color name="alpha_white">#7cffffff</color>
     <color name="blue">#405888</color>
     <color name="purple_grey">#b8bdd1</color>

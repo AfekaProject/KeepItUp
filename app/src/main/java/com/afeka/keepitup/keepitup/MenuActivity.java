@@ -26,7 +26,6 @@ public class MenuActivity extends AppCompatActivity
     private final static String ID_BUNDLE = "ID";
     private FirebaseAuth mAuth;
     private TextView nameAuth, mailAuth;
-    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +34,11 @@ public class MenuActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setMainFragment();
+
         //check if get bundle from notification receiver
         notificationBundle();
         supportInvalidateOptionsMenu();
+
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

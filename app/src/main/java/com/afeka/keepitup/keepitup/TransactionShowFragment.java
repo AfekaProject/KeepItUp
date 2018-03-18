@@ -20,7 +20,7 @@ public class TransactionShowFragment extends Fragment {
     private Database db;
     private int transactionID;
     private Transaction currentTransaction;
-    private TextView name, company, startDate, endDate, notification, notes, chargeType, numOfImg;
+    private TextView name, company,price, startDate, endDate, notification, notes, chargeType, numOfImg;
     private OnFragmentInteractionListener mListener;
     private View toImgButton;
     private Button editButton;
@@ -109,6 +109,7 @@ public class TransactionShowFragment extends Fragment {
         chargeType.setText(currentTransaction.getChargeType().toString());
         notification.setText(currentTransaction.getNotification().toString());
         notes.setText(currentTransaction.getNotes());
+        price.setText(Double.toString(currentTransaction.getPrice()));
         numOfImg.setText(getString(R.string.numOfImg) +" " +  Integer.toString(currentTransaction.getDocuments().size()));
 
     }
@@ -123,12 +124,6 @@ public class TransactionShowFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-   /*     if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
     }
 
     @Override

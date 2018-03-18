@@ -63,4 +63,7 @@
     <string name="hello">Hello</string>
     <string name="ecxMark"> !</string>
     <string name="helloGuest">Hello Guest!</string>
+    <string name="transUpdate">Transaction was updated!</string>
+    <string name="areYouSure">Are you sure you would like to remove</string>
+    <string name="QuestMark"> \? </string>
 </resources>

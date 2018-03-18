@@ -37,12 +37,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHolder> {
-
+    private static final String ID_BUNDLE = "ID";
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Transaction> cardsToShow;
     private ArrayList<Transaction> originalArray;
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
@@ -100,7 +99,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("ID",cardsToShow.get(position).getId());
+                bundle.putInt(ID_BUNDLE ,cardsToShow.get(position).getId());
                 TransactionShowFragment transactionShowFragment = new TransactionShowFragment();
                 transactionShowFragment.setArguments(bundle);
                 ((MenuActivity)context).replaceFragment(transactionShowFragment);
@@ -318,14 +317,16 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
            Paint paint = new Paint();
 
            RectF leftButton = new RectF(itemView.getLeft() , itemView.getTop()  , itemView.getLeft() + buttonWidthWithoutPadding  , itemView.getBottom());
-           paint.setColor(Color.BLUE);
+           paint.setColor(R.color.edit_green);
            c.drawRoundRect(leftButton, corners, corners, paint);
-           drawText("edit", c, leftButton, paint);
+           //String textToShow = Resources.getSystem().getString(R.string.edit);
+           drawText("EDIT", c, leftButton, paint);
 
            RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding , itemView.getTop(), itemView.getRight() , itemView.getBottom());
-           paint.setColor(Color.RED);
+           paint.setColor(R.color.delete_red);
            c.drawRoundRect(rightButton, corners, corners, paint);
-           drawText("delete", c, rightButton, paint);
+        //   textToShow = Resources.getSystem().getString(R.string.delete);
+           drawText("DELETE", c, rightButton, paint);
 
 
            buttonInstance = null;

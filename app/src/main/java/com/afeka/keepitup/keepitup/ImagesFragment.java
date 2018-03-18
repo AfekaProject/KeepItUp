@@ -3,6 +3,7 @@ package com.afeka.keepitup.keepitup;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,6 +35,7 @@ import android.widget.ViewSwitcher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view =  inflater.inflate(R.layout.fragment_images, container, false);
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
@@ -97,11 +99,10 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                 StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder.build());
                 Intent chooseImageIntent = getPickImageIntent(getContext());
-                //startActivityForResult(chooseImageIntent, REQUEST_IMG_ID);
-                //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (chooseImageIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivityForResult(chooseImageIntent, REQUEST_IMAGE_CAPTURE);
                 }
+
 
             }
         });
@@ -137,6 +138,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                 return imgView;
             }
         });
+
         if(bmList == null)
             bmList = new ArrayList<>();
 
@@ -176,8 +178,10 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
        deleteBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               if(bmList.size()>0)
                bmList.remove(switcherPosition);
 
+                setBmList(bmList);
                if(switcherPosition > 0 )
                    switcherPosition--;
 
@@ -204,7 +208,12 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
           //  Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Bitmap imageBitmap = getImageFromResult(getActivity(), resultCode, data);
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = getImageFromResult(getActivity(), resultCode, data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if(bmList.size() < MAX_IMGS){
                 bmList.add(imageBitmap);
                 switcherPosition++;
@@ -217,8 +226,9 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     }
 
     public  Bitmap getImageFromResult(Context context, int resultCode,
-                                            Intent imageReturnedIntent) {
+                                            Intent imageReturnedIntent) throws IOException {
         Bitmap bm = null;
+        Bitmap bmRealSize = null;
         File imageFile = getTempFile(context);
         if (resultCode == Activity.RESULT_OK) {
             Uri selectedImage;
@@ -232,11 +242,12 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
                 selectedImage = imageReturnedIntent.getData();
             }
 
-            bm = getImageResized(context, selectedImage);
+            bmRealSize = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),selectedImage);
+       //     bm = getImageResized(context, selectedImage);
             int rotation = getRotation(context, selectedImage, isCamera);
-            bm = rotate(bm, rotation);
+            bmRealSize = rotate(bmRealSize, rotation);
         }
-        return bm;
+        return bmRealSize;
     }
 
     private static int getRotation(Context context, Uri imageUri, boolean isCamera) {
@@ -299,7 +310,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
 
     private static Bitmap getImageResized(Context context, Uri selectedImage) {
         Bitmap bm;
-        int[] sampleSizes = new int[]{50, 50, 1, 1};
+        int[] sampleSizes = new int[]{100, 100, 1, 1};
         int i = 0;
         do {
             bm = decodeBitmap(context, selectedImage, sampleSizes[i]);
@@ -346,12 +357,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-      /*  if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+
     }
 
     @Override

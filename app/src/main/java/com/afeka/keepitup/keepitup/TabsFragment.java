@@ -8,35 +8,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 
 public class TabsFragment extends Fragment implements SearchView.OnQueryTextListener {
     private Database db;
     public static ArrayList<Transaction> transToShow = new ArrayList<>();
-    private RecyclerView rViewList;
     private FloatingActionButton newItemButton;
     private OnFragmentInteractionListener mListener;
     private CardViewAdapter cardAdapter;
@@ -155,8 +142,8 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             @Override
             public void onRightClicked(int position) { //delete
                 lastPosition = position;
-                builder.setTitle("Are you sure you would like to remove " +
-                        transToShow.get(position).getName() + "?");
+                builder.setTitle(getString(R.string.areYouSure) +
+                        transToShow.get(position).getName() + getString(R.string.QuestMark));
                 builder.show();
 
             }
@@ -212,9 +199,11 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                 transToShow = db.getTransactionList(Transaction.TransactionType.Provider);
                 break;
             case -1:
-                //general
+                transToShow = db.getAllTransactions();
+                break;
                 default:
-                    //general
+                    transToShow = db.getAllTransactions();
+
 
         }
     }

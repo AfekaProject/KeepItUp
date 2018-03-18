@@ -47,12 +47,9 @@ public class NewTransFragment extends Fragment {
     private TextView errorView, name, companyName, price, notes;
     private int transType, details;
     private Transaction currentTransaction;
+    private int editFlag = 0;
 
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private OnFragmentInteractionListener mListener;
 
     public NewTransFragment() {
@@ -152,9 +149,19 @@ public class NewTransFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (createTrans()) {
-                    Snackbar snackbar = Snackbar.make(view,R.string.transAdded, BaseTransientBottomBar.LENGTH_LONG);
+                    Snackbar snackbar;
+                    if(editFlag == 0)
+                    snackbar = Snackbar.make(view,R.string.transAdded, BaseTransientBottomBar.LENGTH_LONG);
+                    else
+                        snackbar = Snackbar.make(view,R.string.transUpdate, BaseTransientBottomBar.LENGTH_LONG);
+
                     snackbar.show();
-                    getFragmentManager().popBackStackImmediate();
+                    TabsFragment tabsFragment = new TabsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(TYPE_BUNDLE, -1);
+                    tabsFragment.setArguments(bundle);
+
+                    ((MenuActivity)getActivity()).replaceFragment(tabsFragment);
                 }
 
 
@@ -170,6 +177,7 @@ public class NewTransFragment extends Fragment {
         @Override
         public void onDataSent(ArrayList<Bitmap> bitmapList) {
             bmList = bitmapList;
+            numOfImgView.setText(Integer.toString(bmList.size()));
         }
     };
 
@@ -278,7 +286,7 @@ public class NewTransFragment extends Fragment {
             currentTransaction = transaction.build();
             db = new Database(getContext());
 
-            if(details == -1)
+            if(editFlag == 1)
                 db.removeTransaction(details);
 
             db.addTransaction(currentTransaction,getContext());
@@ -304,12 +312,6 @@ public class NewTransFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-    /*    if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
     }
 
     @Override
@@ -397,54 +399,56 @@ public class NewTransFragment extends Fragment {
         Bundle bundle = getArguments();
         details = bundle.getInt(EDIT_BUNDLE);
 
-        if (details != -1) {
-            Database db = new Database(this.getActivity().getBaseContext());
-            Transaction transaction = db.getTransactionById(details);
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            bmList = transaction.getDocuments();
-            name.setText(transaction.getName());
-            companyName.setText(transaction.getCompany());
-            calStart = transaction.getStartDate();
-            calEnd = transaction.getEndDate();
-            startDate.setText(df.format(transaction.getStartDate()));
-            endDate.setText(df.format(transaction.getEndDate()));
-            notes.setText(transaction.getNotes());
-            numOfImgView.setText(Integer.toString(transaction.getDocuments().size()));
+        if(editFlag == 0) {
+            if (details != -1) {
+                editFlag = 1;
+                Database db = new Database(this.getActivity().getBaseContext());
+                Transaction transaction = db.getTransactionById(details);
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                bmList = transaction.getDocuments();
+                name.setText(transaction.getName());
+                companyName.setText(transaction.getCompany());
+                calStart = transaction.getStartDate();
+                calEnd = transaction.getEndDate();
+                startDate.setText(df.format(transaction.getStartDate()));
+                endDate.setText(df.format(transaction.getEndDate()));
+                notes.setText(transaction.getNotes());
+                numOfImgView.setText(Integer.toString(transaction.getDocuments().size()));
 
-            switch (transaction.getChargeType()){
-                case Cash:
-                    chargeTypeSpinner.setSelection(0);
-                    break;
-                case CreditCard:
-                    chargeTypeSpinner.setSelection(1);
-                    break;
-                case BankCheck:
-                    chargeTypeSpinner.setSelection(2);
-                    break;
-                case StandingOrder:
-                    chargeTypeSpinner.setSelection(3);
-                    break;
-            }
+                switch (transaction.getChargeType()) {
+                    case Cash:
+                        chargeTypeSpinner.setSelection(0);
+                        break;
+                    case CreditCard:
+                        chargeTypeSpinner.setSelection(1);
+                        break;
+                    case BankCheck:
+                        chargeTypeSpinner.setSelection(2);
+                        break;
+                    case StandingOrder:
+                        chargeTypeSpinner.setSelection(3);
+                        break;
+                }
 
-            switch (transaction.getNotification()){
-                case Never:
-                    notificSpinner.setSelection(0);
-                    break;
-                case OneDay:
-                    notificSpinner.setSelection(1);
-                    break;
-                case TwoDays:
-                    notificSpinner.setSelection(2);
-                    break;
-                case TreeDays:
-                    notificSpinner.setSelection(3);
-                    break;
-                case Week:
-                    notificSpinner.setSelection(4);
-                    break;
+                switch (transaction.getNotification()) {
+                    case Never:
+                        notificSpinner.setSelection(0);
+                        break;
+                    case OneDay:
+                        notificSpinner.setSelection(1);
+                        break;
+                    case TwoDays:
+                        notificSpinner.setSelection(2);
+                        break;
+                    case TreeDays:
+                        notificSpinner.setSelection(3);
+                        break;
+                    case Week:
+                        notificSpinner.setSelection(4);
+                        break;
+                }
             }
         }
-
     }
 }
 
