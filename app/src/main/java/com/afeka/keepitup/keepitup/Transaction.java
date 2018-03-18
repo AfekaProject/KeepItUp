@@ -1,5 +1,9 @@
 package com.afeka.keepitup.keepitup;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -153,6 +157,43 @@ public class Transaction {
             else
                 return true;
         }
+    }
+    public void setAlarm(String name, int notificationTime, Context context){
+    //    int notificationTime = notificSpinner.getSelectedItemPosition(), subTimeDay=0;
+        int subTimeDay = 0;
+
+        switch (notificationTime){
+            case 1:
+                subTimeDay = -1;
+                break;
+            case 2:
+                subTimeDay = -2;
+                break;
+            case 3:
+                subTimeDay = -3;
+                break;
+            case 4:
+                subTimeDay = -7;
+                break;
+        }
+
+        Calendar dateToNotification = Calendar.getInstance();
+        dateToNotification.setTime(this.endDate);
+        dateToNotification.add(dateToNotification.DATE,subTimeDay);
+
+        Intent intent = new Intent(context,NotificationReceiver.class);
+        intent.putExtra("NAME",name);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,this.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, dateToNotification.getTimeInMillis(),pendingIntent);
+        System.out.println("Notification for " + this.getId() + " was added!");
+    }
+
+    public void cancelAlarm(Context context){
+        Intent intent = new Intent(context,NotificationReceiver.class);
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,this.id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
     }
 
     public static class TransactionBuilder {

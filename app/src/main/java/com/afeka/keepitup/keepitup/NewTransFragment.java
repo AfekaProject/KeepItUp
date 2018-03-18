@@ -288,7 +288,7 @@ public class NewTransFragment extends Fragment {
 
             if(editFlag == 1) {
                 if(currentTransaction.getNotification() != Transaction.ForwardNotification.Never) {
-                    cancelAlarm(currentTransaction.getId());
+                    currentTransaction.cancelAlarm(getContext());
                     System.out.println("Notification for " + currentTransaction.getId() +" was canceled");
                 }
                 db.removeTransaction(details);
@@ -297,7 +297,8 @@ public class NewTransFragment extends Fragment {
             db.addTransaction(currentTransaction);
 
             if(notificSpinner.getSelectedItemPosition()!=0 && editFlag ==0)
-                setAlarm(name.getText().toString());
+                currentTransaction.setAlarm(name.getText().toString(), notificSpinner.getSelectedItemPosition(),
+                        getContext());
 
 
                 return true;
@@ -371,7 +372,7 @@ public class NewTransFragment extends Fragment {
 
     }
 
-    private void setAlarm(String name){
+ /*   private void setAlarm(String name){
         int notificationTime = notificSpinner.getSelectedItemPosition(), subTimeDay=0;
 
         switch (notificationTime){
@@ -406,7 +407,7 @@ public class NewTransFragment extends Fragment {
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
-    }
+    }*/
 
     private void setDetails() {
         Bundle bundle = getArguments();

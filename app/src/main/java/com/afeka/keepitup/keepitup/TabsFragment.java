@@ -3,6 +3,7 @@ package com.afeka.keepitup.keepitup;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
@@ -171,7 +172,12 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         db.removeTransaction(transToShow.get(lastPosition).getId());
+
+                        if(transToShow.get(lastPosition).getNotification() != Transaction.ForwardNotification.Never)
+                            transToShow.get(lastPosition).cancelAlarm(getContext());
+
                         transToShow.remove(lastPosition);
+
                         cardAdapter.notifyDataSetChanged();
                         break;
 
@@ -252,6 +258,8 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         // TODO: Update argument type and name
         void onNewItemClicked();
     }
+
+
 
 
 

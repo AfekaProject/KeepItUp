@@ -98,15 +98,16 @@ public class MenuActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             int transId = bundle.getInt(SHOW_BUNDLE);
-            TransactionShowFragment showFragment = new TransactionShowFragment();
-            Bundle myBundle = new Bundle();
-            myBundle.putInt(ID_BUNDLE,transId);
-            showFragment.setArguments(myBundle);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-
+                if(transId >0 ) {
+                    TransactionShowFragment showFragment = new TransactionShowFragment();
+                    Bundle myBundle = new Bundle();
+                    myBundle.putInt(ID_BUNDLE, transId);
+                    showFragment.setArguments(myBundle);
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.flContent, showFragment).commit();
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
         }
 
     }
