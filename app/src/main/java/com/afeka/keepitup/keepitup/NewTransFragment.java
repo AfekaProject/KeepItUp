@@ -350,13 +350,13 @@ public class NewTransFragment extends Fragment {
     }
 
     private Boolean checkValidDate() {
-        if (calStart != null && calEnd != null) {
+        if (endDate.getText().length() >0  && startDate.getText().length() > 0) {
             if (calEnd.getTime() - calStart.getTime() > 0)
                 return true;
             else
                 return false;
         }
-        else if(calStart!=null)
+        else if(startDate.getText() != null)
             return true;
 
         return false;
@@ -393,23 +393,61 @@ public class NewTransFragment extends Fragment {
         System.out.println("Notification for " + currentTransaction.getId() + " was added!");
     }
 
-    private void setDetails(){
+    private void setDetails() {
         Bundle bundle = getArguments();
         details = bundle.getInt(EDIT_BUNDLE);
 
-        if(details != -1 ){
+        if (details != -1) {
             Database db = new Database(this.getActivity().getBaseContext());
             Transaction transaction = db.getTransactionById(details);
-
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            bmList = transaction.getDocuments();
             name.setText(transaction.getName());
             companyName.setText(transaction.getCompany());
+            calStart = transaction.getStartDate();
+            calEnd = transaction.getEndDate();
             startDate.setText(df.format(transaction.getStartDate()));
             endDate.setText(df.format(transaction.getEndDate()));
             notes.setText(transaction.getNotes());
+            numOfImgView.setText(Integer.toString(transaction.getDocuments().size()));
+
+            switch (transaction.getChargeType()){
+                case None:
+                    chargeTypeSpinner.setSelection(0);
+                    break;
+                case Cash:
+                    chargeTypeSpinner.setSelection(1);
+                    break;
+                case CreditCard:
+                    chargeTypeSpinner.setSelection(2);
+                    break;
+                case BankCheck:
+                    chargeTypeSpinner.setSelection(3);
+                    break;
+                case StandingOrder:
+                    chargeTypeSpinner.setSelection(4);
+                    break;
+            }
+
+            switch (transaction.getNotification()){
+                case Never:
+                    notificSpinner.setSelection(0);
+                    break;
+                case OneDay:
+                    notificSpinner.setSelection(1);
+                    break;
+                case TwoDays:
+                    notificSpinner.setSelection(2);
+                    break;
+                case TreeDays:
+                    notificSpinner.setSelection(3);
+                    break;
+                case Week:
+                    notificSpinner.setSelection(4);
+                    break;
+            }
         }
+
     }
-
-
 }
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/backgroundbuilding"
+    android:background="@color/green"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.afeka.keepitup.keepitup.TabsFragment">
 
@@ -81,7 +81,7 @@
         android:layout_gravity="bottom|right"
         android:clickable="true"
         android:layout_margin="10dp"
-        android:src="@drawable/plus_icon"
+        android:src="@drawable/new_icon"
         app:fabSize="normal" />
 
 </FrameLayout>

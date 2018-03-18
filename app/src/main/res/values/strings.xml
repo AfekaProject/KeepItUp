@@ -56,5 +56,11 @@
     <string name="invalidName">Invalid name!</string>
     <string name="invalidEndDate">End date is necessary for notification!</string>
     <string name="transAdded">Transaction was added!</string>
-
+    <string name="numOfImg">Num Of Images: </string>
+    <string name="login">Login</string>
+    <string name="add">ADD</string>
+    <string name="OK">OK</string>
+    <string name="hello">Hello</string>
+    <string name="ecxMark"> !</string>
+    <string name="helloGuest">Hello Guest!</string>
 </resources>

@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Transaction {
 
-    enum  TransactionType {Insurance,Warranty , Provider}
+    enum  TransactionType {Insurance, Warranty , Provider}
     enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
     enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
 

@@ -15,12 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,FragmentChangeListener {
     private final static String SHOW_BUNDLE = "SHOW";
     private final static String TYPE_BUNDLE = "TYPE";
     private final static String ID_BUNDLE = "ID";
+    private FirebaseAuth mAuth;
+    private TextView nameAuth, mailAuth;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +34,10 @@ public class MenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setMainFragment();
         //check if get bundle from notification receiver
         notificationBundle();
-
+        supportInvalidateOptionsMenu();
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,6 +47,8 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View view = navigationView.getHeaderView(0);
+        checkAuth(view);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +61,30 @@ public class MenuActivity extends AppCompatActivity
         });
 
     }
+
+    private void setMainFragment() {
+        MainFragment mainFragment = new MainFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, mainFragment).commit();
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void checkAuth(View view) {
+        nameAuth = view.findViewById(R.id.userName);
+        mailAuth = view.findViewById(R.id.email);
+        mAuth = FirebaseAuth.getInstance();
+
+        if(mAuth.getCurrentUser() != null){
+            if( mAuth.getCurrentUser().getDisplayName() != null )
+            nameAuth.setText(getResources().getString(R.string.hello)+ " " + mAuth.getCurrentUser().getDisplayName() +getResources().getString(R.string.ecxMark));
+                mailAuth.setText(mAuth.getCurrentUser().getEmail());
+        }else{
+        nameAuth.setText(R.string.helloGuest);
+        mailAuth.setText("");
+        }
+    }
+
     private void notificationBundle(){
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -81,16 +113,19 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

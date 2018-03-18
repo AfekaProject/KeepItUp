@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 public class TransactionShowFragment extends Fragment {
     private Database db;
     private int transactionID;
-    private Transaction currentTranscation;
-    private TextView name, company, startDate, endDate, notification, notes, chargeType;
+    private Transaction currentTransaction;
+    private TextView name, company, startDate, endDate, notification, notes, chargeType, numOfImg;
     private OnFragmentInteractionListener mListener;
     private View toImgButton;
     private Button editButton;
@@ -83,7 +83,7 @@ public class TransactionShowFragment extends Fragment {
             //get transaction from db by id
             db = new Database(getContext());
             System.out.println("ID to show: " + transactionID);
-            currentTranscation = db.getTransactionById(transactionID);
+            currentTransaction = db.getTransactionById(transactionID);
 
         }
     }
@@ -96,16 +96,18 @@ public class TransactionShowFragment extends Fragment {
         chargeType = view.findViewById(R.id.charge_textView);
         notification = view.findViewById(R.id.notification_textView);
         notes = view.findViewById(R.id.notes_textView);
+        numOfImg = view.findViewById(R.id.numOfImg_textView);
 
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        name.setText(currentTranscation.getName());
-        company.setText(currentTranscation.getCompany());
-        startDate.setText(df.format(currentTranscation.getStartDate()));
-        endDate.setText(df.format(currentTranscation.getEndDate()));
-        chargeType.setText(currentTranscation.getChargeType().toString());
-        notification.setText(currentTranscation.getNotification().toString());
-        notes.setText(currentTranscation.getNotes());
+        name.setText(currentTransaction.getName());
+        company.setText(currentTransaction.getCompany());
+        startDate.setText(df.format(currentTransaction.getStartDate()));
+        endDate.setText(df.format(currentTransaction.getEndDate()));
+        chargeType.setText(currentTransaction.getChargeType().toString());
+        notification.setText(currentTransaction.getNotification().toString());
+        notes.setText(currentTransaction.getNotes());
+        numOfImg.setText(R.string.numOfImg + currentTransaction.getDocuments().size());
 
     }
 

@@ -38,24 +38,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ImagesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ImagesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ImagesFragment extends Fragment implements FragmentCallback{
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final String TEMP_IMAGE_NAME = "tempImg";
-    private static final int MAX_IMGS = 5;
+    private static final int MAX_IMGS = 10;
     private static final int MY_PERMISSIONS_REQUEST = 500;
     private Button addNewImgButton;
     private static int MIN_WIDTH = DEFAULT_MIN_WIDTH_QUALITY;
     private ImageSwitcher imgSwitcher;
-    private ArrayList <Bitmap> bmList = new ArrayList<>();
+    private ArrayList <Bitmap> bmList;
     private Button prevBtn;
     private Button nextBtn;
     private int switcherPosition = -1;

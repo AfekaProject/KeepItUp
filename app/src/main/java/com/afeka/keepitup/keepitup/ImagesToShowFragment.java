@@ -46,16 +46,17 @@ public class ImagesToShowFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_images_to_show, container, false);
 
 
-     //   imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.arrowdown_icon));
-      //  imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.noimage_icon));
+      //  imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.arrowdown_icon));
+     //   imgArr.add(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.noimage_icon));
 
         currentTransID = getArguments().getInt(ID_BUNDLE);
         db = new Database(getContext());
         imgArr = db.getTransactionById(currentTransID).getDocuments();
         mPager = view.findViewById(R.id.pager);
-        //System.out.println("num of images: " + db.getTransactionById(currentTransID).getDocuments().size() );
+        System.out.println("num of images: " + imgArr.size() );
         ImageAdapter pagerAdapter = new ImageAdapter(getContext(),imgArr);
         mPager.setAdapter(pagerAdapter);
+
 
         return view;
     }
