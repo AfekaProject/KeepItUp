@@ -24,6 +24,7 @@ public class MenuActivity extends AppCompatActivity
     private final static String ID_BUNDLE = "ID";
     private FirebaseAuth mAuth;
     private TextView nameAuth, mailAuth;
+    private View navigationViewHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,8 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View view = navigationView.getHeaderView(0);
-        checkAuth(view);
+        navigationViewHeader = navigationView.getHeaderView(0);
+        checkAuth(navigationViewHeader);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +59,13 @@ public class MenuActivity extends AppCompatActivity
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        checkAuth(navigationViewHeader);
 
     }
 
@@ -108,6 +116,7 @@ public class MenuActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

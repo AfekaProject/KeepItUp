@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             t.setDocumentsFromBitmap(listToBackup.get(i).getDocuments());
             DatabaseReference transactionRef = userDataRef.child(TRANSACTIONS_TABLE).child(i+"");
             transactionRef.setValue(t);
+
         }
         Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
     }
