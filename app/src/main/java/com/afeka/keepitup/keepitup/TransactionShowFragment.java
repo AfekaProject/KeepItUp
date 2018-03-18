@@ -9,11 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
 
 public class TransactionShowFragment extends Fragment {
     private static final String ID_BUNDLE = "ID";
@@ -30,7 +27,6 @@ public class TransactionShowFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static TransactionShowFragment newInstance(String param1, String param2) {
         TransactionShowFragment fragment = new TransactionShowFragment();
         Bundle args = new Bundle();
@@ -41,7 +37,6 @@ public class TransactionShowFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

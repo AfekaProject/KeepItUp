@@ -3,7 +3,6 @@ package com.afeka.keepitup.keepitup;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,14 +31,11 @@ import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class ImagesFragment extends Fragment implements FragmentCallback{
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;

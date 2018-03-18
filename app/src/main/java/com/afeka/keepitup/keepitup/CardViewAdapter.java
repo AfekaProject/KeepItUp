@@ -1,40 +1,24 @@
 package com.afeka.keepitup.keepitup;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.view.LayoutInflater;
 import android.widget.Filter;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
-
-import com.bumptech.glide.load.engine.Resource;
-
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHolder> {
     private static final String ID_BUNDLE = "ID";
@@ -42,7 +26,6 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
     private LayoutInflater inflater;
     private ArrayList<Transaction> cardsToShow;
     private ArrayList<Transaction> originalArray;
-
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
         private TextView nameTextView;
@@ -54,11 +37,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
             nameTextView = itemView.findViewById(R.id.nameToShow);
             startDateTextView = itemView.findViewById(R.id.startDateToShow);
             company = itemView.findViewById(R.id.companyToShow);
-
         }
-
     }
-
 
     public CardViewAdapter(Context context, ArrayList<Transaction> list) {
         this.context = context;
@@ -67,14 +47,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = inflater.from(parent.getContext())
                 .inflate(R.layout.my_card, parent, false);
-
-
         return new ViewHolder(itemView);
     }
 
@@ -105,9 +81,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
                 ((MenuActivity)context).replaceFragment(transactionShowFragment);
             }
         });
-
     }
-
 
     public Filter getFilter(){
         return new Filter() {
@@ -150,9 +124,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
         return cardsToShow.size() ;
     }
 
-
     }
-
 
    class SwipeCardController extends Callback {
 
@@ -171,13 +143,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
        private Context context;
 
 
-
        public SwipeCardController(Context context , SwipeControllerActions buttonsActions) {
            this.buttonsActions = buttonsActions;
            this.context = context;
-
        }
-
 
        @Override
        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -262,16 +231,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
                            setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                            setItemsClickable(recyclerView, false);
                        }
-
                    }
                        return false;
                    }
                });
-
-
            }
-
-
 
        private void setTouchUpListener(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY, final int actionState, final boolean isCurrentlyActive) {
            recyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -320,17 +284,16 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
            Paint paint = new Paint();
 
            RectF leftButton = new RectF(itemView.getLeft() , itemView.getTop()  , itemView.getLeft() + buttonWidthWithoutPadding  , itemView.getBottom());
-           paint.setColor(R.color.edit_green);
+           paint.setColor(context.getResources().getColor(R.color.edit_green));
            c.drawRoundRect(leftButton, corners, corners, paint);
            String textToShow = context.getResources().getString(R.string.edit);
            drawText(textToShow, c, leftButton, paint);
 
            RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding , itemView.getTop(), itemView.getRight() , itemView.getBottom());
-           paint.setColor(R.color.delete_red);
+           paint.setColor(context.getResources().getColor(R.color.delete_red));
            c.drawRoundRect(rightButton, corners, corners, paint);
            textToShow = context.getResources().getString(R.string.delete);
            drawText(textToShow, c, rightButton, paint);
-
 
            buttonInstance = null;
            if (buttonState == ButtonsState.LEFT_VISIBLE) {
@@ -356,8 +319,6 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
                drawButtons(c, currentItemViewHolder);
            }
        }
-
-
    }
 
  abstract class SwipeControllerActions {

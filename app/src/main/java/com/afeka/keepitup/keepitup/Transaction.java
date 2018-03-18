@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
-import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -20,7 +17,6 @@ public class Transaction {
     public enum  TransactionType {Insurance,Warranty , Provider}
     public enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
     public enum ForwardNotification {Never, OneDay , TwoDays , ThreeDays, Week}
-
 
     //required parameters
     private int id;
@@ -38,7 +34,6 @@ public class Transaction {
     private ForwardNotification notification;
 
     public Transaction(){
-
     }
 
     public Transaction(TransactionAdapter ta){

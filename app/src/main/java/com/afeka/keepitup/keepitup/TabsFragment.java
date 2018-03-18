@@ -52,11 +52,6 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-
-
     }
 
     @Override
@@ -211,11 +206,8 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                 break;
                 default:
                     transToShow = db.getAllTransactions();
-
-
         }
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
