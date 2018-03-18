@@ -43,11 +43,11 @@
     <string name="notification_title">Don\'t forget!</string>
     <string name="not_title">Notification time </string>
     <string name="company_title">Company </string>
-    <string name="startDate_title">Start date </string>
-    <string name="endDate_title">End date </string>
+    <string name="startDate_title">Start Date </string>
+    <string name="endDate_title">End Date </string>
     <string name="notes_title">Notes </string>
-    <string name="price_title">Total price </string>
-    <string name="charge_title">Charge type </string>
+    <string name="price_title">Total Price </string>
+    <string name="charge_title">Charge Type </string>
     <string name="newTrans_title">New Transaction </string>
     <string name="fromTo">-</string>
     <string name="totalImg">Total Images: </string>
@@ -69,4 +69,7 @@
     <string name="QuestMark"> \? </string>
     <string name="yes"> Yes </string>
     <string name="no"> No </string>
+    <string name="notificationForward_title">Forward Notification</string>
+    <string name="name_title">Name</string>
+    <string name="type_title">Type</string>
 </resources>

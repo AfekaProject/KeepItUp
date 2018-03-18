@@ -15,7 +15,7 @@ public class Transaction {
 
     public enum  TransactionType {Insurance,Warranty , Provider}
     public enum ChargeType {None, Cash, CreditCard, BankCheck, StandingOrder}
-    public enum ForwardNotification {Never, OneDay , TwoDays , TreeDays , Week}
+    public enum ForwardNotification {Never, OneDay , TwoDays , ThreeDays, Week}
 
 
     //required parameters

@@ -249,7 +249,7 @@ public class NewTransFragment extends Fragment {
                     transaction.setNotification(Transaction.ForwardNotification.TwoDays);
                     break;
                 case 3:
-                    transaction.setNotification(Transaction.ForwardNotification.TreeDays);
+                    transaction.setNotification(Transaction.ForwardNotification.ThreeDays);
                     break;
                 case 4:
                     transaction.setNotification(Transaction.ForwardNotification.Week);
@@ -286,13 +286,19 @@ public class NewTransFragment extends Fragment {
             currentTransaction = transaction.build();
             db = new Database(getContext());
 
-            if(editFlag == 1)
+            if(editFlag == 1) {
+                if(currentTransaction.getNotification() != Transaction.ForwardNotification.Never) {
+                    cancelAlarm(currentTransaction.getId());
+                    System.out.println("Notification for " + currentTransaction.getId() +" was canceled");
+                }
                 db.removeTransaction(details);
 
+            }
             db.addTransaction(currentTransaction);
 
-            if(notificSpinner.getSelectedItemPosition()!=0)
+            if(notificSpinner.getSelectedItemPosition()!=0 && editFlag ==0)
                 setAlarm(name.getText().toString());
+
 
                 return true;
 
@@ -395,6 +401,13 @@ public class NewTransFragment extends Fragment {
         System.out.println("Notification for " + currentTransaction.getId() + " was added!");
     }
 
+    private void cancelAlarm(int id){
+        Intent intent = new Intent(getContext(),NotificationReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
+    }
+
     private void setDetails() {
         Bundle bundle = getArguments();
         details = bundle.getInt(EDIT_BUNDLE);
@@ -440,7 +453,7 @@ public class NewTransFragment extends Fragment {
                     case TwoDays:
                         notificSpinner.setSelection(2);
                         break;
-                    case TreeDays:
+                    case ThreeDays:
                         notificSpinner.setSelection(3);
                         break;
                     case Week:

@@ -54,7 +54,7 @@
                 android:id="@+id/name_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name "
+                android:text="@string/name_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -84,7 +84,7 @@
                 android:id="@+id/transType_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type "
+                android:text="@string/type_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_toEndOf="@id/transType_view"
                 android:alpha="0.8"
                 android:entries="@array/transactions_type"
-                android:popupBackground="@color/blue" />
+                 />
 
         </RelativeLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Company "
+                android:text="@string/company_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -141,7 +141,7 @@
                 android:id="@+id/startDate_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Start Date "
+                android:text="@string/startDate_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -180,7 +180,7 @@
                 android:id="@+id/endDate_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="End Date   "
+                android:text="@string/endDate_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -217,7 +217,7 @@
                 android:id="@+id/price_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Price "
+                android:text="@string/price_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -246,7 +246,7 @@
                 android:id="@+id/charge_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Charge type  "
+                android:text="@string/charge_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -256,7 +256,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/charge_view"
                 android:alpha="0.8"
-                android:popupBackground="@color/blue" />
+                 />
         </RelativeLayout>
 
 
@@ -271,7 +271,7 @@
                 android:id="@+id/notificationTime_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Forward Notification "
+                android:text="@string/notificationForward_title"
                 android:textColor="@color/blue"
                 android:textSize="18sp" />
 
@@ -282,7 +282,7 @@
                 android:layout_toEndOf="@id/notificationTime_view"
                 android:alpha="0.8"
                 android:layout_marginEnd="3dp"
-                android:popupBackground="@color/blue" />
+                 />
 
 
         </RelativeLayout>
@@ -299,7 +299,7 @@
             android:id="@+id/notes_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notes "
+            android:text="@string/notes_title"
             android:textColor="@color/blue"
             android:textSize="18sp" />
 

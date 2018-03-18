@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 
 public class TransactionShowFragment extends Fragment {
@@ -91,6 +92,7 @@ public class TransactionShowFragment extends Fragment {
     }
 
     private void setInfo(View view){
+        String[] notificationToShow = getResources().getStringArray(R.array.notification_time);
         name = view.findViewById(R.id.name_textView);
         company = view.findViewById(R.id.company_textView);
         startDate = view.findViewById(R.id.fromDate_textView);
@@ -110,7 +112,7 @@ public class TransactionShowFragment extends Fragment {
         startDate.setText(df.format(currentTransaction.getStartDate()));
         endDate.setText(df.format(currentTransaction.getEndDate()));
         chargeType.setText(currentTransaction.getChargeType().toString());
-        notification.setText(currentTransaction.getNotification().toString());
+        notification.setText(notificationToShow[currentTransaction.getNotification().ordinal()]);
         notes.setText(currentTransaction.getNotes());
         price.setText(Double.toString(currentTransaction.getPrice()));
         numOfImg.setText(getString(R.string.numOfImg) +" " +  Integer.toString(currentTransaction.getDocuments().size()));
