@@ -52,6 +52,7 @@
     <string name="fromTo">-</string>
     <string name="totalImg">Total Images: </string>
     <string name="backUpDone">Backup completed</string>
+    <string name="restoreDone">Restore completed</string>
     <string name="invalidDate">Invalid date!</string>
     <string name="invalidName">Invalid name!</string>
     <string name="invalidEndDate">End date is necessary for notification!</string>

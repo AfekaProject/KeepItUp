@@ -1,36 +1,55 @@
 package com.afeka.keepitup.keepitup;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SING_IN = 123;
     private static final String TAG = "LoginActivity";
+    private static final String TRANSACTIONS_TABLE = "Transactions";
 
     //Firebase Data
     private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    private DatabaseReference myDataRef;
+    private DatabaseReference userDataRef;
+    private StorageReference storageRef;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
     private String userId;
 
@@ -39,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button restoreButton;
 
     private Database db = new Database(this);
+
+    private ArrayList<Transaction> transactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +72,12 @@ public class LoginActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        myRef = database.getReference();
+        myDataRef = database.getReference();
+        storageRef = FirebaseStorage.getInstance().getReference();
         user = mAuth.getCurrentUser();
         if (user!=null){
             userId = user.getUid();
-            Log.e (TAG,userId);
+            Log.e (TAG,"userid:"+userId);
             loginButton.setText(R.string.sign_out);
             backupButton.setEnabled(true);
             restoreButton.setEnabled(true);
@@ -84,26 +106,50 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void restoreFromFirebase(View view) {
-        ValueEventListener restore = new ValueEventListener() {
+        db.clearTables();
+
+        final ArrayList<TransactionAdapter> transactionList = new ArrayList<>();
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userId).child(TRANSACTIONS_TABLE);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.getValue();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    TransactionAdapter transaction = postSnapshot.getValue(TransactionAdapter.class);
+                    Log.w(TAG, "size: "+ transaction.getDocuments().size());
+                    transactionList.add(transaction);
+                }
+                saveToDevice(transactionList);
+                Toast.makeText(getBaseContext(), R.string.restoreDone,Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.w(TAG, "Error: ", databaseError.toException());
             }
-        };
-
-        myRef.addValueEventListener(restore);
-
-        myRef.removeEventListener(restore);
+        });
     }
 
     public void backupToFirebase(View view) {
+        userDataRef = myDataRef.child(userId);
+
         ArrayList <Transaction> listToBackup = db.getAllTransactions();
-        myRef.child("Users").child(userId).setValue(listToBackup);
+
+        for (int i = 0 ; i < listToBackup.size() ; i++){
+            TransactionAdapter t = new TransactionAdapter(listToBackup.get(i));
+            t.setDocumentsFromBitmap(listToBackup.get(i).getDocuments());
+            DatabaseReference transactionRef = userDataRef.child(TRANSACTIONS_TABLE).child(i+"");
+            transactionRef.setValue(t);
+            //uploadImages(t.getDocuments(),transactionRef);
+
+/*
+            ArrayList<Bitmap> imagesArr = listToBackup.get(i).getDocuments();
+            for (int j = 0 ; j < imagesArr.size() ; j++){
+                String fileName = listToBackup.get(i).getId() +
+                        "_Image_" + j + ".jpg";
+                t.getDocuments().add(uploadImage(fileName,imagesArr.get(j)));
+            }
+            */
+        }
         Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
     }
 
@@ -124,5 +170,14 @@ public class LoginActivity extends AppCompatActivity {
             restoreButton.setEnabled(false);
             Toast.makeText(getBaseContext(),R.string.sign_out,Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveToDevice(ArrayList<TransactionAdapter> ta){
+        transactions = new ArrayList<>();
+        for (int i = 0 ; i<ta.size() ; i++){
+            Transaction t = new Transaction(ta.get(i));
+            transactions.add(t);
+        }
+        db.addBackup(transactions);
     }
 }

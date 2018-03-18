@@ -10,8 +10,6 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-
-
         android:testOnly="false"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,7 +32,6 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
