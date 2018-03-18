@@ -159,7 +159,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     }
-
+    
     private void setDialogConfirm(){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
