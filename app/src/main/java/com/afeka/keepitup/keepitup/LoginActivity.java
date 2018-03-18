@@ -1,12 +1,14 @@
 package com.afeka.keepitup.keepitup;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SING_IN = 123;
     private static final String TAG = "LoginActivity";
     private static final String TRANSACTIONS_TABLE = "Transactions";
-    private static final String IMAGES_TABLE = "Images";
 
     //Firebase Data
     private FirebaseDatabase database;
@@ -105,28 +106,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void restoreFromFirebase(View view) {
+        db.clearTables();
+
         final ArrayList<TransactionAdapter> transactionList = new ArrayList<>();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userId).child(TRANSACTIONS_TABLE);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        TransactionAdapter transaction = postSnapshot.getValue(TransactionAdapter.class);
-                        transactionList.add(transaction);
-                    }
-                    saveToDevice(transactionList);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    TransactionAdapter transaction = postSnapshot.getValue(TransactionAdapter.class);
+                    Log.w(TAG, "size: "+ transaction.getDocuments().size());
+                    transactionList.add(transaction);
+                }
+                saveToDevice(transactionList);
+                Toast.makeText(getBaseContext(), R.string.restoreDone,Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "Error: ", databaseError.toException());
             }
         });
-        restoreImageList();
-        Toast.makeText(getBaseContext(), R.string.restoreDone,Toast.LENGTH_SHORT).show();
     }
 
     public void backupToFirebase(View view) {
@@ -136,75 +136,21 @@ public class LoginActivity extends AppCompatActivity {
 
         for (int i = 0 ; i < listToBackup.size() ; i++){
             TransactionAdapter t = new TransactionAdapter(listToBackup.get(i));
+            t.setDocumentsFromBitmap(listToBackup.get(i).getDocuments());
             DatabaseReference transactionRef = userDataRef.child(TRANSACTIONS_TABLE).child(i+"");
             transactionRef.setValue(t);
+            //uploadImages(t.getDocuments(),transactionRef);
 
+/*
             ArrayList<Bitmap> imagesArr = listToBackup.get(i).getDocuments();
             for (int j = 0 ; j < imagesArr.size() ; j++){
                 String fileName = listToBackup.get(i).getId() +
                         "_Image_" + j + ".jpg";
-                uploadImage(fileName,imagesArr.get(j));
+                t.getDocuments().add(uploadImage(fileName,imagesArr.get(j)));
             }
+            */
         }
         Toast.makeText(getBaseContext(), R.string.backUpDone,Toast.LENGTH_SHORT).show();
-    }
-
-    private void uploadImage (String fileName,Bitmap image){
-        StorageReference imageRef = storageRef.child(userId).child(fileName);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] data = baos.toByteArray();
-        UploadTask uploadTask = imageRef.putBytes(data);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String name = taskSnapshot.getMetadata().getName();
-                String url = taskSnapshot.getDownloadUrl().toString();
-               // UploadInfo info = new UploadInfo(name,url);
-                String key = userDataRef.child(IMAGES_TABLE).push().getKey();
-                userDataRef.child(IMAGES_TABLE).child(key).setValue(name);
-            }
-        });
-    }
-
-    private void restoreImageList () {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userId).child(IMAGES_TABLE);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        String filePath = postSnapshot.getValue(String.class);
-                        Log.e(TAG, "file"+filePath);
-                        downloadImage(filePath);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void downloadImage(String fileName){
-
-        final int transactionIndex =new Scanner(fileName).useDelimiter("\\D").nextInt();
-
-        Log.e(TAG, "index"+transactionIndex);
-        StorageReference userImages = storageRef.child(userId).child(IMAGES_TABLE);
-        StorageReference filePath = userImages.child(fileName);
-        final long ONE_MEGABYTE = 1024 * 1024;
-        filePath.getBytes(2*ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                transactions.get(transactionIndex).getDocuments().add(bitmap);
-            }
-        });
     }
 
     public void checkLogin(View view) {
@@ -229,7 +175,8 @@ public class LoginActivity extends AppCompatActivity {
     private void saveToDevice(ArrayList<TransactionAdapter> ta){
         transactions = new ArrayList<>();
         for (int i = 0 ; i<ta.size() ; i++){
-            transactions.add(new Transaction(ta.get(i)));
+            Transaction t = new Transaction(ta.get(i));
+            transactions.add(t);
         }
         db.addBackup(transactions);
     }

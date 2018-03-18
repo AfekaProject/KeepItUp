@@ -1,7 +1,12 @@
 package com.afeka.keepitup.keepitup;
 
+import android.graphics.Bitmap;
+import android.util.Base64;
+
 import com.afeka.keepitup.keepitup.Transaction;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionAdapter {
@@ -15,6 +20,7 @@ public class TransactionAdapter {
     private Date endDate;
     private String notes;
     private double price;
+    private ArrayList<String> documents;
     private Transaction.ChargeType chargeType;
     private Transaction.ForwardNotification notification;
 
@@ -31,9 +37,11 @@ public class TransactionAdapter {
         this.startDate = other.getStartDate();
         this.endDate = other.getEndDate();
         this.notes = other.getNotes();
+        this.documents = new ArrayList<>();
         this.chargeType = other.getChargeType();
         this.notification = other.getNotification();
     }
+
 
     public int getId() {
         return id;
@@ -67,6 +75,10 @@ public class TransactionAdapter {
         return price;
     }
 
+    public ArrayList<String> getDocuments() {
+        return documents;
+    }
+
     public Transaction.ChargeType getChargeType() {
         return chargeType;
     }
@@ -75,4 +87,17 @@ public class TransactionAdapter {
         return notification;
     }
 
+    public void setDocuments(ArrayList<String> documents) {
+        this.documents = documents;
+    }
+
+    public void setDocumentsFromBitmap(ArrayList<Bitmap> documents) {
+        for (int i = 0 ;i<documents.size();i++){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            documents.get(i).compress(Bitmap.CompressFormat.JPEG,100,baos);
+            byte[] data = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(data,Base64.NO_WRAP);
+            this.documents.add(encodedImage);
+        }
+    }
 }

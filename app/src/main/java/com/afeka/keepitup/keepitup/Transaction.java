@@ -1,6 +1,8 @@
 package com.afeka.keepitup.keepitup;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -44,6 +46,7 @@ public class Transaction {
         this.endDate = ta.getEndDate();
         this.notes = ta.getNotes();
         this.price = ta.getPrice();
+        setDocumentsFromString(ta.getDocuments());
         setChargeType(ta.getChargeType());
         setNotification(ta.getNotification());
     }
@@ -82,6 +85,15 @@ public class Transaction {
 
     public void setDocuments(ArrayList<Bitmap> documents) {
         this.documents = documents;
+    }
+
+    private void setDocumentsFromString(ArrayList<String> documents) {
+        this.documents = new ArrayList<>();
+        for (int i = 0 ; i<documents.size();i++){
+            byte[] decodedString = Base64.decode(documents.get(i), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            this.documents.add(decodedByte);
+        }
     }
 
     public int getId() {

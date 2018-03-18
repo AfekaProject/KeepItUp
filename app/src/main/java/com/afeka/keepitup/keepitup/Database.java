@@ -55,7 +55,6 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-
     public int addTransaction (Transaction transaction){
         ContentValues values = new ContentValues();
         values.put(FeedTransaction.COLUMN_NAME_NAME,transaction.getName());
@@ -173,6 +172,11 @@ public class Database extends SQLiteOpenHelper {
         return list;
     }
 
+    public void clearTables (){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + FeedTransaction.TABLE_NAME);
+        db.execSQL("DELETE FROM " + FeedImages.TABLE_NAME);
+    }
 
     private void addImages (long id, ArrayList<Bitmap> images){
         if (images==null)
