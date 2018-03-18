@@ -101,7 +101,7 @@ public class TransactionShowFragment extends Fragment {
         price = view.findViewById(R.id.price_textView);
         type = view.findViewById(R.id.type_textView);
         numOfImg = view.findViewById(R.id.numOfImg_textView);
-
+        price = view.findViewById(R.id.price_textView);
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         name.setText(currentTransaction.getName());
@@ -114,7 +114,6 @@ public class TransactionShowFragment extends Fragment {
         notes.setText(currentTransaction.getNotes());
         price.setText(Double.toString(currentTransaction.getPrice()));
         numOfImg.setText(getString(R.string.numOfImg) +" " +  Integer.toString(currentTransaction.getDocuments().size()));
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

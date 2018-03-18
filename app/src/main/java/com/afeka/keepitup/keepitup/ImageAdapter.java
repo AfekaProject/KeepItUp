@@ -50,8 +50,6 @@ public class ImageAdapter extends PagerAdapter{
         container.addView(imgLayout,0);
 
         return imgLayout;
-
-
     }
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {

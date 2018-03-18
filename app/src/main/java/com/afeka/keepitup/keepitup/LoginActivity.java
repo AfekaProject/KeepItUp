@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     TransactionAdapter transaction = postSnapshot.getValue(TransactionAdapter.class);
-                    Log.w(TAG, "size: "+ transaction.getDocuments().size());
                     transactionList.add(transaction);
                 }
                 saveToDevice(transactionList);
@@ -131,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void backupToFirebase(View view) {
         userDataRef = myDataRef.child(userId);
-
+        userDataRef.removeValue();
         ArrayList <Transaction> listToBackup = db.getAllTransactions();
 
         for (int i = 0 ; i < listToBackup.size() ; i++){

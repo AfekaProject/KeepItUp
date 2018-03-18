@@ -95,7 +95,7 @@
                 android:layout_toEndOf="@id/transType_view"
                 android:alpha="0.8"
                 android:entries="@array/transactions_type"
-                android:popupBackground="@color/blue" />
+                android:background="@drawable/rectangle" />
 
         </RelativeLayout>
 
@@ -254,9 +254,10 @@
                 android:id="@+id/charge_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_toEndOf="@id/charge_view"
                 android:alpha="0.8"
-                android:popupBackground="@color/blue" />
+                android:background="@drawable/rectangle" />
         </RelativeLayout>
 
 
@@ -279,10 +280,11 @@
                 android:id="@+id/notificationTime_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_toEndOf="@id/notificationTime_view"
                 android:alpha="0.8"
                 android:layout_marginEnd="3dp"
-                android:popupBackground="@color/blue" />
+                android:background="@drawable/rectangle" />
 
 
         </RelativeLayout>
