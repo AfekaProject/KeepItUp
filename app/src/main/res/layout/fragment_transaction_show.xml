@@ -29,13 +29,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="25dp"
                     android:layout_marginTop="30dp"
                     android:backgroundTintMode="screen"
                     android:fontFamily="@font/revolution"
                     android:padding="3dp"
                     android:text="TextView"
                     android:textSize="36sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/type_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+
+
+                    android:backgroundTintMode="screen"
+                    android:fontFamily="@font/revolution"
+                    android:padding="3dp"
+                    android:text="TextView"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
 

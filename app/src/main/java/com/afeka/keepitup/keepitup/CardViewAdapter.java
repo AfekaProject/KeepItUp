@@ -168,11 +168,14 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
        private RectF buttonInstance = null;
        private RecyclerView.ViewHolder currentItemViewHolder = null;
        private SwipeControllerActions buttonsActions = null;
+       private Context context;
 
 
 
-       public SwipeCardController(SwipeControllerActions buttonsActions) {
+       public SwipeCardController(Context context , SwipeControllerActions buttonsActions) {
            this.buttonsActions = buttonsActions;
+           this.context = context;
+
        }
 
 
@@ -319,14 +322,14 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHo
            RectF leftButton = new RectF(itemView.getLeft() , itemView.getTop()  , itemView.getLeft() + buttonWidthWithoutPadding  , itemView.getBottom());
            paint.setColor(R.color.edit_green);
            c.drawRoundRect(leftButton, corners, corners, paint);
-           //String textToShow = Resources.getSystem().getString(R.string.edit);
-           drawText("EDIT", c, leftButton, paint);
+           String textToShow = context.getResources().getString(R.string.edit);
+           drawText(textToShow, c, leftButton, paint);
 
            RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding , itemView.getTop(), itemView.getRight() , itemView.getBottom());
            paint.setColor(R.color.delete_red);
            c.drawRoundRect(rightButton, corners, corners, paint);
-        //   textToShow = Resources.getSystem().getString(R.string.delete);
-           drawText("DELETE", c, rightButton, paint);
+           textToShow = context.getResources().getString(R.string.delete);
+           drawText(textToShow, c, rightButton, paint);
 
 
            buttonInstance = null;

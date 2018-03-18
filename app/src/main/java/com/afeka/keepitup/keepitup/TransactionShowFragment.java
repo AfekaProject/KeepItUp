@@ -20,7 +20,7 @@ public class TransactionShowFragment extends Fragment {
     private Database db;
     private int transactionID;
     private Transaction currentTransaction;
-    private TextView name, company,price, startDate, endDate, notification, notes, chargeType, numOfImg;
+    private TextView name, company,price, startDate, endDate, notification, notes, chargeType, numOfImg, type;
     private OnFragmentInteractionListener mListener;
     private View toImgButton;
     private Button editButton;
@@ -98,11 +98,14 @@ public class TransactionShowFragment extends Fragment {
         chargeType = view.findViewById(R.id.charge_textView);
         notification = view.findViewById(R.id.notification_textView);
         notes = view.findViewById(R.id.notes_textView);
+        price = view.findViewById(R.id.price_textView);
+        type = view.findViewById(R.id.type_textView);
         numOfImg = view.findViewById(R.id.numOfImg_textView);
 
 
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         name.setText(currentTransaction.getName());
+        type.setText(currentTransaction.getType().toString());
         company.setText(currentTransaction.getCompany());
         startDate.setText(df.format(currentTransaction.getStartDate()));
         endDate.setText(df.format(currentTransaction.getEndDate()));

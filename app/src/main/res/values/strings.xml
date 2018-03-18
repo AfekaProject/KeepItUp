@@ -67,4 +67,6 @@
     <string name="transUpdate">Transaction was updated!</string>
     <string name="areYouSure">Are you sure you would like to remove</string>
     <string name="QuestMark"> \? </string>
+    <string name="yes"> Yes </string>
+    <string name="no"> No </string>
 </resources>

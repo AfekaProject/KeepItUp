@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TabsFragment extends Fragment implements SearchView.OnQueryTextListener {
+    private static final String TYPE_BUNDLE = "TYPE";
+    private static final String EDIT_BUNDLE = "EDIT";
     private Database db;
     public static ArrayList<Transaction> transToShow = new ArrayList<>();
     private FloatingActionButton newItemButton;
@@ -104,8 +106,8 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
                 @Override
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("TYPE",transType);
-                    bundle.putInt("EDIT", -1);
+                    bundle.putInt(TYPE_BUNDLE,transType);
+                    bundle.putInt(EDIT_BUNDLE, -1);
                     NewTransFragment newTransFragment = new NewTransFragment();
                     newTransFragment.setArguments(bundle);
                     ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
@@ -126,12 +128,12 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         recyclerView.setAdapter(cardAdapter);
         setDialogConfirm();
 
-        final SwipeCardController swipeCardController = new SwipeCardController(new SwipeControllerActions() {
+        final SwipeCardController swipeCardController = new SwipeCardController(getContext(),new SwipeControllerActions() {
             @Override
             public void onLeftClicked(int position) { //edit/show
                 super.onLeftClicked(position);
                 Bundle bundle = new Bundle();
-                bundle.putInt("EDIT",transToShow.get(position).getId());
+                bundle.putInt(EDIT_BUNDLE,transToShow.get(position).getId());
                 NewTransFragment newTransFragment = new NewTransFragment();
                 newTransFragment.setArguments(bundle);
                 ((MenuActivity)getActivity()).replaceFragment(newTransFragment);
@@ -181,12 +183,12 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
         };
 
         builder = new AlertDialog.Builder(getActivity(),android.R.style.Theme_Material_Light_Dialog_Alert);
-        builder.setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).create();
+        builder.setPositiveButton(getString(R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(R.string.no), dialogClickListener).create();
     }
 
-    void getTransactionType(){
-        transType = getArguments().getInt("TYPE");
+    private void getTransactionType(){
+        transType = getArguments().getInt(TYPE_BUNDLE);
 
         switch (transType){
             case 0:
@@ -195,7 +197,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
             case 1:
                 transToShow = db.getTransactionList(Transaction.TransactionType.Warranty);
                 break;
-            case 3:
+            case 2:
                 transToShow = db.getTransactionList(Transaction.TransactionType.Provider);
                 break;
             case -1:
@@ -219,14 +221,7 @@ public class TabsFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-  /*    if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
 
-*/
 
     }
 

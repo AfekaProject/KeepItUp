@@ -206,8 +206,7 @@ public class ImagesFragment extends Fragment implements FragmentCallback{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-          //  Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+
             Bitmap imageBitmap = null;
             try {
                 imageBitmap = getImageFromResult(getActivity(), resultCode, data);
